@@ -1,7 +1,7 @@
 /* Colors ------------------------------------------------*/
 $cBackground: rgba(241, 241, 241, 1);
 $cForeground: #FFF;
-$cMain: #3AB481;
+$cMain: #4490C9;
 
 /* Vars ------------------------------------------------*/
 $duration: .3s;
@@ -15,6 +15,25 @@ $timing: cubic-bezier(0.51,.92,.24,1.15);
 	#{$property}: $value;
 }
 
+@mixin keyframes($animation-name) {
+	@-webkit-keyframes $animation-name {
+		@content;
+	}
+	@-moz-keyframes $animation-name {
+		@content;
+	}
+	@-ms-keyframes $animation-name {
+		@content;
+	}
+	@-o-keyframes $animation-name {
+		@content;
+	}
+	@keyframes $animation-name {
+		@content;
+	}
+}
+
+/* Functions ------------------------------------------------*/
 @function black($opacity) {
 	@return rgba(0, 0, 0, $opacity);
 }

@@ -1,0 +1,57 @@
+/* SASS ------------------------------------------------ */
+@import 'basics';
+
+/* Animations ------------------------------------------------- */
+@include keyframes(fadeIn) {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
+
+@include keyframes(fadeOut) {
+	0% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+/* View ------------------------------------------------- */
+#view {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background-color: white(.95);
+	opacity: 0;
+	display: none;
+
+	&.fadeIn {
+		display: block;
+		@include vendorize(animation, fadeIn $duration $timing 0s 1 normal forwards);
+	}
+
+	&.fadeOut {
+		display: block;
+		@include vendorize(animation, fadeOut $duration $timing 0s 1 normal forwards);
+	}
+}
+
+	/* Image ------------------------------------------------- */
+	#view #image {
+		position: absolute;
+		top: 90px;
+		right: 30px;
+		bottom: 30px;
+		left: 30px;
+		background-repeat: no-repeat;
+		background-position: 50% 50%;
+		background-size: contain;
+
+		@include vendorize(animation, zoomIn $duration $timing);
+	}

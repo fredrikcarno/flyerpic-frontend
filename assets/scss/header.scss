@@ -2,22 +2,24 @@
 @import 'basics';
 
 /* Header ------------------------------------------------- */
-#header {
+header {
 	position: fixed;
 	top: 0px;
 	left: 0px;
 	right: 0px;
 	height: 60px;
 	background-color: $cForeground;
+	border-bottom: 1px solid black(.1);
+	z-index: 2;
 }
 
 	/* About ------------------------------------------------- */
-	#header #about {
+	header #about {
 		float: left;
 		margin: 14px;
 	}
 
-		#header #about img#logo {
+		header #about img#logo {
 			float: left;
 			width: 32px;
 			height: 32px;
@@ -25,25 +27,55 @@
 			border-radius: 100px;
 		}
 
-		#header #about h1#name {
+		header #about h1#name {
 			float: left;
-			margin: 6px 0 0 14px;
+			margin: 7px 0 0 14px;
 			padding: 0;
 			font-size: 16px;
 			font-weight: 400;
 			color: black(.8);
 		}
 
-	/* Button ------------------------------------------------- */
-	#header #button {
+	/* Close ------------------------------------------------- */
+	header a#close {
+		float: left;
+		margin: 14px;
+		padding: 8px 10px;
+		color: black(1);
+		text-decoration: none;
+		background-color: black(.1);
+		border-radius: 5px;
+		cursor: pointer;
+		z-index: 1;
+		display: none;
+
+		& span.icon {
+			margin-right: 6px;
+		}
+	}
+
+	/* Buy ------------------------------------------------- */
+	header a#buy {
 		float: right;
 		margin: 14px;
 		padding: 8px 10px;
 		color: white(1);
+		text-decoration: none;
 		background-color: $cMain;
 		border-radius: 5px;
-	}
+		cursor: pointer;
 
-		#header #button span.icon {
+		@include vendorize(transition, background-color $duration);
+
+		& span.icon {
 			margin-right: 6px;
 		}
+
+		&:hover {
+			background-color: darken($cMain, 5%);
+		}
+
+		&:active {
+			background-color: lighten($cMain, 5%);
+		}
+	}

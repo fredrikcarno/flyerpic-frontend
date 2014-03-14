@@ -1,5 +1,0 @@
-$(document).ready( ->
-
-	# Code here
-
-)

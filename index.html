@@ -20,37 +20,42 @@
 		<link type="text/css" rel="stylesheet" href="assets/css/content.css">
 		<link type="text/css" rel="stylesheet" href="assets/css/header.css">
 		<link type="text/css" rel="stylesheet" href="assets/css/main.css">
+		<link type="text/css" rel="stylesheet" href="assets/css/view.css">
 
 	</head>
 	<body>
 
 	<!-- Header -->
-	<div id="header">
+	<header>
 
 		<div id="about">
 			<img id="logo" src="data/users/1.png">
 			<h1 id="name">Tobias Reich</h1>
 		</div>
 
-		<a id="button">
+		<a id="close"><span class="icon ion-android-close"></span>Close</a>
+
+		<a id="buy">
 			<span class="icon ion-pricetag"></span>Buy <span class="type">album</span> for <span class="price">$9</span>
 		</a>
 
-	</div>
+	</header>
 
 	<!-- Content -->
-	<div id="content">
+	<div id="content"></div>
 
-		<img class="photo" src="" width="200" height="200">
-		<img class="photo" src="" width="200" height="200">
-		<img class="photo" src="" width="200" height="200">
-		<img class="photo" src="" width="200" height="200">
+	<!-- View -->
+	<div id="view" class="">
+
+		<div id="image" style="background-image: url('../lychee_main/uploads/big/857fae2619b2ffab3c1142ab8520aad0.JPG')"></div>
 
 	</div>
 
 	<!-- JS -->
 	<script type="text/javascript" src="bower_components/jQuery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src="assets/js/main.js"></script>
+	<script type="text/javascript" src="assets/js/miniLychee.js"></script>
+	<script type="text/javascript" src="assets/js/content.js"></script>
+	<script type="text/javascript" src="assets/js/init.js"></script>
 
 	</body>
 </html>

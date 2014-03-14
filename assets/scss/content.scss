@@ -1,6 +1,29 @@
 /* SASS ------------------------------------------------ */
 @import 'basics';
 
+/* Animations ------------------------------------------------- */
+@include keyframes(zoomIn) {
+	0% {
+		opacity: 0;
+		@include vendorize(transform, scale(.8));
+	}
+	100% {
+		opacity: 1;
+		@include vendorize(transform, scale(1));
+	}
+}
+
+@include keyframes(zoomOut) {
+	0% {
+		opacity: 1;
+		@include vendorize(transform, scale(1));
+	}
+	100% {
+		opacity: 0;
+		@include vendorize(transform, scale(.8));
+	}
+}
+
 /* Content ------------------------------------------------- */
 #content {
 	padding-top: 60px;
@@ -12,5 +35,24 @@
 		margin: 20px 0px 0px 20px;
 		background-color: $cForeground;
 		border: 6px solid $cForeground;
+		border-radius: 2px;
 		box-shadow: 0px 0px 0px 1px black(.08);
+		cursor: pointer;
+		display: none;
+
+		@include vendorize(transition, box-shadow $duration);
+
+		&.fadeIn {
+			display: block;
+			@include vendorize(animation, zoomIn $duration $timing);
+		}
+
+		&.fadeOut {
+			display: block;
+			@include vendorize(animation, zoomOut $duration $timing);
+		}
+
+		&:hover {
+			box-shadow: 0px 0px 0px 1px $cMain;
+		}
 	}
