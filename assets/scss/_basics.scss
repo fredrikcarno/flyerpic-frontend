@@ -1,0 +1,24 @@
+/* Colors ------------------------------------------------*/
+$cBackground: rgba(241, 241, 241, 1);
+$cForeground: #FFF;
+$cMain: #3AB481;
+
+/* Vars ------------------------------------------------*/
+$duration: .3s;
+$timing: cubic-bezier(0.51,.92,.24,1.15);
+
+/* Mixins ------------------------------------------------ */
+@mixin vendorize($property, $value) {
+	-webkit-#{$property}: $value;
+	-moz-#{$property}: $value;
+	-ms-#{$property}: $value;
+	#{$property}: $value;
+}
+
+@function black($opacity) {
+	@return rgba(0, 0, 0, $opacity);
+}
+
+@function white($opacity) {
+	@return rgba(255, 255, 255, $opacity);
+}

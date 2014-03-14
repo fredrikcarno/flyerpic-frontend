@@ -1,0 +1,22 @@
+{
+  "name": "miniLychee",
+  "version": "0.0.1",
+  "authors": [
+    "Tobias Reich <tobias.reich.ich@gmail.com>"
+  ],
+  "description": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jQuery": "~2.1.0",
+    "ionicons": "~1.4.1",
+    "normalize.css": "~3.0.0"
+  }
+}

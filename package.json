@@ -1,0 +1,25 @@
+{
+  "name": "miniLychee",
+  "version": "0.0.1",
+  "description": "",
+  "authors": [
+    "Tobias Reich <tobias.reich.ich@gmail.com>"
+  ],
+  "keywords": [
+    "tracking",
+    "analytics"
+  ],
+  "license": "MIT",
+  "scripts": {
+    "preinstall": "bower install",
+    "postinstall": "npm run build",
+    "build": "grunt"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-coffee": "~0.10.1",
+    "grunt-contrib-sass": "~0.7.3",
+    "load-grunt-tasks": "~0.4.0",
+    "grunt-contrib-watch": "~0.6.0"
+  }
+}

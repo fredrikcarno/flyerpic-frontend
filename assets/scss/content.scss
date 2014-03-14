@@ -1,0 +1,16 @@
+/* SASS ------------------------------------------------ */
+@import 'basics';
+
+/* Content ------------------------------------------------- */
+#content {
+	padding-top: 60px;
+}
+
+	/* Photos ------------------------------------------------- */
+	#content .photo {
+		float: left;
+		margin: 20px 0px 0px 20px;
+		background-color: $cForeground;
+		border: 6px solid $cForeground;
+		box-shadow: 0px 0px 0px 1px black(.08);
+	}
