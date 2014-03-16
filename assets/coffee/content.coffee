@@ -2,9 +2,9 @@ this.content =
 
 	load:
 
-		album: (id) ->
+		album: (albumID) ->
 
-			miniLychee.api "getAlbum&albumID=#{ id }", (data) ->
+			miniLychee.api "getAlbum&albumID=#{ albumID }&password=", (data) ->
 
 				html = ''
 
@@ -15,7 +15,13 @@ this.content =
 
 				content.display.album()
 
-		photo: (id) ->
+		photo: (albumID, photoID) ->
+
+			miniLychee.api "getPhoto&photoID=#{ albumID }&albumID=#{ albumID }&password=", (data) ->
+
+				$('#view').html content.build.image(data)
+
+				content.display.photo()
 
 			content.display.photo()
 
@@ -36,7 +42,7 @@ this.content =
 					, 300
 
 			$('header #buy .type').html 'album'
-			$('header #about').show()
+			$('header #about, header menu').show()
 			$('header #close').hide()
 
 		photo: ->
@@ -50,7 +56,7 @@ this.content =
 					.addClass 'fadeIn'
 
 			$('header #buy .type').html 'photo'
-			$('header #about').hide()
+			$('header #about, header menu').hide()
 			$('header #close').show()
 
 	build:
@@ -59,4 +65,10 @@ this.content =
 
 			"""
 			<img class="photo fadeIn" src="#{ miniLychee.lychee }uploads/thumb/#{ data.thumbUrl }" width="200" height="200" onClick="window.content.load.photo(#{ data.id })">
+			"""
+
+		image: (data) ->
+
+			"""
+			<div id="image" style="background-image: url('#{ miniLychee.lychee }uploads/big/#{ data.url }')"></div>
 			"""

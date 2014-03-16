@@ -16,7 +16,11 @@ header {
 	/* About ------------------------------------------------- */
 	header #about {
 		float: left;
-		margin: 14px;
+		margin: 14px 18px 14px 14px;
+
+		@media screen and (max-width: $break) {
+			display: none !important;
+		}
 	}
 
 		header #about img#logo {
@@ -39,7 +43,7 @@ header {
 	/* Close ------------------------------------------------- */
 	header a#close {
 		float: left;
-		margin: 14px;
+		margin: 14px 18px 14px 14px;
 		padding: 8px 10px;
 		color: black(1);
 		text-decoration: none;
@@ -53,6 +57,30 @@ header {
 			margin-right: 6px;
 		}
 	}
+
+	/* Menu ------------------------------------------------- */
+	header menu {
+		float: left;
+		padding: 8px 0px 8px 18px;
+		border-left: 1px black(.1) solid;
+
+		@media screen and (max-width: $break) {
+			border-left: none;
+		}
+	}
+
+		header menu a {
+			float: left;
+			margin-right: 16px;
+			color: black(.5);
+			text-decoration: none;
+
+			@include vendorize(transition, color $duration);
+
+			&:hover {
+				color: black(1);
+			}
+		}
 
 	/* Buy ------------------------------------------------- */
 	header a#buy {

@@ -13,7 +13,7 @@ this.miniLychee =
 
 			# Load
 			content.load.album albumID
-			content.load.photo photoID
+			content.load.photo albumID, photoID
 
 		else if albumID?
 
@@ -35,14 +35,18 @@ this.miniLychee =
 
 			success: (data) ->
 
-				if typeof data is 'string' and data.substring(0, 6) is 'Error:'
-					miniLychee.error data.substring(7, data.length), params, data
-					return false
+				console.log data + ':' + params
 
 				# Parse boolean
 				if data is '1' then data = true
 				if data is '' then data = false
 
+				# Parse error
+				if typeof data is 'string' and data.substring(0, 6) is 'Error:'
+					miniLychee.error data.substring(7, data.length), params, data
+					return false
+
+				# Parse JSON
 				if	typeof data is 'string' and
 					data.substring(0, 1) is '{' and
 					data.substr(-1) is '}'

@@ -6,6 +6,7 @@ $cMain: #4490C9;
 /* Vars ------------------------------------------------*/
 $duration: .3s;
 $timing: cubic-bezier(0.51,.92,.24,1.15);
+$break: '600px';
 
 /* Mixins ------------------------------------------------ */
 @mixin vendorize($property, $value) {
