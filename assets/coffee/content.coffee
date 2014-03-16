@@ -6,24 +6,34 @@ this.content =
 
 			miniLychee.api "getAlbum&albumID=#{ albumID }&password=", (data) ->
 
+				# Set user
+				$('header #about img#logo').attr 'src', "data/user/#{ data.title.substr(0, 1) }.png"
+
+				# Build content
 				html = ''
 
 				$.each data.content, (index, value) ->
 					html += content.build.photo value
 
+				# Add content
 				$('#content').html html
 
+				# Retina
+				$('img').each ->
+					new RetinaImage this
+
+				# Show album
 				content.display.album()
 
 		photo: (albumID, photoID) ->
 
 			miniLychee.api "getPhoto&photoID=#{ albumID }&albumID=#{ albumID }&password=", (data) ->
 
+				# Build and add content
 				$('#view').html content.build.image(data)
 
+				# Show photo
 				content.display.photo()
-
-			content.display.photo()
 
 	display:
 
