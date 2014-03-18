@@ -11,8 +11,8 @@ if (!empty($_POST['function'])) {
 	if (file_exists('../data/config.php')) require('../data/config.php');
 	else exit('Error: Config not found!');
 
-	require 'modules/db.php';
-	require 'modules/user.php';
+	require('modules/db.php');
+	require('modules/user.php');
 
 	// Connect
 	$database = dbConnect();
