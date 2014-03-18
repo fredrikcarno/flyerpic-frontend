@@ -1,6 +1,6 @@
 this.miniLychee =
 
-	lychee: ''
+	master: ''
 
 	load: (url) ->
 
@@ -25,11 +25,13 @@ this.miniLychee =
 			# Show error
 			alert 'NO CODE'
 
-	api: (params, callback) ->
+	api: (external, params, callback) ->
+
+		root = if external is true then miniLychee.master else ''
 
 		$.ajax
 			type: 'POST'
-			url: "#{ miniLychee.lychee }php/api.php"
+			url: "#{ root }php/api.php"
 			data: "function=#{ params }"
 			dataType: 'text'
 

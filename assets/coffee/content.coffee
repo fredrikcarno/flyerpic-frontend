@@ -2,12 +2,20 @@ this.content =
 
 	load:
 
+		user: (userID) ->
+
+			miniLychee.api false, "getUser&userID=#{ userID }", (data) ->
+
+				# Set about
+				$('header img#logo').attr 'src', "data/user/#{ userID }.png"
+				$('header #name').html data.name
+
+				# Set price
+				$('header #buy .price').html data.priceperalbum
+
 		album: (albumID) ->
 
-			miniLychee.api "getAlbum&albumID=#{ albumID }&password=", (data) ->
-
-				# Set user
-				$('header #about img#logo').attr 'src', "data/user/#{ data.title.substr(0, 1) }.png"
+			miniLychee.api true, "getAlbum&albumID=#{ albumID }&password=", (data) ->
 
 				# Build content
 				html = ''
@@ -25,9 +33,12 @@ this.content =
 				# Show album
 				content.display.album()
 
+				# Load user
+				content.load.user data.title.substr(0, 1)
+
 		photo: (albumID, photoID) ->
 
-			miniLychee.api "getPhoto&photoID=#{ albumID }&albumID=#{ albumID }&password=", (data) ->
+			miniLychee.api true, "getPhoto&photoID=#{ albumID }&albumID=#{ albumID }&password=", (data) ->
 
 				# Build and add content
 				$('#view').html content.build.image(data)
@@ -74,11 +85,11 @@ this.content =
 		photo: (data) ->
 
 			"""
-			<img class="photo fadeIn" src="#{ miniLychee.lychee }uploads/thumb/#{ data.thumbUrl }" width="200" height="200" onClick="window.content.load.photo(#{ data.id })">
+			<img class="photo fadeIn" src="#{ miniLychee.master }uploads/thumb/#{ data.thumbUrl }" width="200" height="200" onClick="window.content.load.photo(#{ data.id })">
 			"""
 
 		image: (data) ->
 
 			"""
-			<div id="image" style="background-image: url('#{ miniLychee.lychee }uploads/big/#{ data.url }')"></div>
+			<div id="image" style="background-image: url('#{ miniLychee.master }uploads/big/#{ data.url }')"></div>
 			"""
