@@ -33,7 +33,7 @@ if (!empty($_POST['function'])) {
 
 	}
 
-	pay2();
+	pay();
 
 } else {
 

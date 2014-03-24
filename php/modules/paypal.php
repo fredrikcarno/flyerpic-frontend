@@ -17,59 +17,30 @@ function getContext() {
 
 }
 
-function setCreditCard() {
+function setRedirect() {
 
-	$addr = new PayPal\Api\Address();
-	$addr->setLine1('52 N Main ST');
-	$addr->setCity('Johnstown');
-	$addr->setCountry_code('US');
-	$addr->setPostal_code('43210');
-	$addr->setState('OH');
+	$redirect = new PayPal\Api\RedirectUrls();
+	$redirect->setReturn_url('https://electerious.com#return');
+	$redirect->setCancel_url('https://electerious.com#cancel');
 
-	$card = new PayPal\Api\CreditCard();
-	$card->setNumber('4417119669820331');
-	$card->setType('visa');
-	$card->setExpire_month('11');
-	$card->setExpire_year('2018');
-	$card->setCvv2('874');
-	$card->setFirst_name('Joe');
-	$card->setLast_name('Shopper');
-	$card->setBilling_address($addr);
-
-	return $card;
+	return $redirect;
 
 }
 
-function setPayer($creditCard) {
-
-	$fi = new PayPal\Api\FundingInstrument();
-	$fi->setCredit_card($creditCard);
+function setPayer() {
 
 	$payer = new PayPal\Api\Payer();
-	$payer->setPayment_method('credit_card');
-	$payer->setFunding_instruments(array($fi));
+	$payer->setPayment_method('paypal');
 
 	return $payer;
 
 }
 
-function setAmount() {
-
-	$amountDetails = new PayPal\Api\AmountDetails();
-	$amountDetails->setSubtotal('7.41');
-	$amountDetails->setTax('0.03');
-	$amountDetails->setShipping('0.00');
+function setTransaction() {
 
 	$amount = new PayPal\Api\Amount();
 	$amount->setCurrency('USD');
-	$amount->setTotal('7.47');
-	$amount->setDetails($amountDetails);
-
-	return $amount;
-
-}
-
-function setTransaction($amount) {
+	$amount->setTotal('7');
 
 	$transaction = new PayPal\Api\Transaction();
 	$transaction->setAmount($amount);
@@ -79,33 +50,37 @@ function setTransaction($amount) {
 
 }
 
-function setPayment($apiContext, $payer, $transaction) {
+function setPayment($apiContext, $redirect, $payer, $transaction) {
 
 	$payment = new PayPal\Api\Payment();
 	$payment->setIntent('sale');
+	$payment->setRedirect_urls($redirect);
 	$payment->setPayer($payer);
 	$payment->setTransactions(array($transaction));
 
-	$payment->create($apiContext);
+	return $payment;
 
 }
 
 function pay() {
 
 	$apiContext	= getContext();
-	$card		= setCreditCard();
-	$payer		= setPayer($card);
-	$amount		= setAmount();
-	$transaction	= setTransaction($amount);
-	$payment		= setPayment($apiContext, $payer, $transaction);
+	$redirect	= setRedirect();
+	$payer		= setPayer();
+	$transaction	= setTransaction();
+	$payment		= setPayment($apiContext, $redirect, $payer, $transaction);
 
-}
+	try {
 
-function pay2() {
+		$payment->create($apiContext);
 
-	$apiContext	= getContext();
+	} catch (PayPal\Exception\PPConnectionException $ex) {
 
-	$payment = new PayPal\Api\Payment();
-	$payment->create($apiContext);
+		echo 'hallo';
+		echo "Exception: " . $ex->getMessage() . PHP_EOL;
+		var_dump($ex->getData());
+		exit(1);
+
+	}
 
 }
