@@ -31,9 +31,11 @@ if (!empty($_POST['function'])) {
 									echo json_encode(getUser($_POST['userID']));
 								break;
 
-	}
+		case 'getPayPalLink':	if (isset($_POST['albumID']))
+									echo getPayPalLink($_POST['albumID']);
+								break;
 
-	pay();
+	}
 
 } else {
 
