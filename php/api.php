@@ -11,11 +11,16 @@ if (!empty($_POST['function'])) {
 	if (file_exists('../data/config.php')) require('../data/config.php');
 	else exit('Error: Config not found!');
 
-	require('modules/db.php');
-	require('modules/user.php');
+	define('PP_CONFIG_PATH', '../data/' . $ppConfig);
+
+	require '../vendor/autoload.php';
+	require 'modules/db.php';
+	require 'modules/user.php';
+	require 'modules/paypal.php';
 
 	// Connect
-	$database = dbConnect();
+	$database	= dbConnect();
+	$ini			= parse_ini_file(PP_CONFIG_PATH . 'sdk_config.ini');
 
 	switch ($_POST['function']) {
 
@@ -27,6 +32,8 @@ if (!empty($_POST['function'])) {
 								break;
 
 	}
+
+	pay2();
 
 } else {
 
