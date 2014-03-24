@@ -5,10 +5,6 @@
   "authors": [
     "Tobias Reich <tobias.reich.ich@gmail.com>"
   ],
-  "keywords": [
-    "tracking",
-    "analytics"
-  ],
   "license": "MIT",
   "scripts": {
     "preinstall": "bower install",
