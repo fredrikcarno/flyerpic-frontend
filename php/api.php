@@ -41,7 +41,7 @@ if (!empty($_POST['function'])) {
 
 } else {
 
-	exit('Error: No permission!');
+	exit('Error: Parameter "function" not defined!');
 
 }
 
