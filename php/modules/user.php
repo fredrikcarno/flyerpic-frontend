@@ -6,14 +6,28 @@
  * @copyright	2014 by Tobias Reich
  */
 
-function getUser($userID) {
+class User {
 
-	global $database;
+	private $database = null;
+	private $userID = null;
 
-	$query	= "SELECT * FROM lychee_users WHERE id = '$userID';";
-	$result = $database->query($query);
-	$return = $result->fetch_array();
+	function __construct($database, $userID) {
 
-	return $return;
+		$this->database = $database;
+		$this->userID = $userID;
+
+	}
+
+	function get() {
+
+		if (!isset($this->database, $this->userID)) return null;
+
+		$query	= "SELECT * FROM lychee_users WHERE id = '$this->userID';";
+		$result = $this->database->query($query);
+		$return = $result->fetch_assoc();
+
+		return $return;
+
+	}
 
 }

@@ -19,16 +19,18 @@ if (!empty($_POST['function'])) {
 	require 'modules/paypal.php';
 
 	// Connect
-	$database	= dbConnect();
-	$ini			= parse_ini_file(PP_CONFIG_PATH . 'sdk_config.ini');
+	$database	= new Database($dbUser, $dbPassword, $dbHost, $dbName);
+	$ini		= parse_ini_file(PP_CONFIG_PATH . 'sdk_config.ini');
 
 	switch ($_POST['function']) {
 
 		case 'getLychee':		echo $lychee;
 								break;
 
-		case 'getUser':			if (isset($_POST['userID']))
-									echo json_encode(getUser($_POST['userID']));
+		case 'getUser':			if (isset($_POST['userID'])) {
+									$user = new User($database->get(), $_POST['userID']);
+									echo json_encode($user->get());
+								}
 								break;
 
 		case 'getPayPalLink':	if (isset($_POST['albumID']))

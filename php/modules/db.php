@@ -6,30 +6,44 @@
  * @copyright	2014 by Tobias Reich
  */
 
-function dbConnect() {
+class Database {
 
-	global $dbUser, $dbPassword, $dbHost, $dbName;
+	private $source = null;
 
-	$database = new mysqli($dbHost, $dbUser, $dbPassword);
+	function __construct($dbUser, $dbPassword, $dbHost, $dbName) {
 
-	if ($database->connect_errno) exit('Error: ' . $database->connect_error);
+		$database = new mysqli($dbHost, $dbUser, $dbPassword);
 
-	if (!$database->select_db($dbName)) exit('Error: Could not select database!');
+		if ($database->connect_errno) exit('Error: ' . $database->connect_error);
 
-	// Avoid sql injection on older MySQL versions
-	if ($database->server_version<50500) $database->set_charset('GBK');
+		if (!$database->select_db($dbName)) exit('Error: Could not select database!');
 
-	return $database;
+		// Avoid sql injection on older MySQL versions
+		if ($database->server_version<50500) $database->set_charset('GBK');
 
-}
+		// Save database
+		$this->source = $database;
 
-function dbClose() {
+		return true;
 
-	global $database;
+	}
 
-	if (!$database->close()) exit('Error: Closing the connection failed!');
+	function get() {
 
-	return true;
+		if (!isset($this->source)) return null;
+		else return $this->source;
+
+	}
+
+	function close() {
+
+		if (!isset($this->source)) return false;
+
+		$this->source->close();
+
+		return true;
+
+	}
 
 }
 
