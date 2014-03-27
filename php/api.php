@@ -35,7 +35,7 @@ if (!empty($_POST['function'])) {
 								break;
 
 		case 'getPayPalLink':	if (isset($_POST['albumID']))
-									$paypal->splitPay();
+									echo $paypal->getLink();
 								break;
 
 	}
