@@ -10,13 +10,13 @@ class Database {
 
 	private $source = null;
 
-	function __construct($dbUser, $dbPassword, $dbHost, $dbName) {
+	function __construct($dbCredentials) {
 
-		$database = new mysqli($dbHost, $dbUser, $dbPassword);
+		$database = new mysqli($dbCredentials['host'], $dbCredentials['user'], $dbCredentials['pass']);
 
 		if ($database->connect_errno) exit('Error: ' . $database->connect_error);
 
-		if (!$database->select_db($dbName)) exit('Error: Could not select database!');
+		if (!$database->select_db($dbCredentials['name'])) exit('Error: Could not select database!');
 
 		// Avoid sql injection on older MySQL versions
 		if ($database->server_version<50500) $database->set_charset('GBK');

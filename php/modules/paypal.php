@@ -8,23 +8,20 @@
 
 class PayPal {
 
-	private $apiUser = 'tobias.reich.ich-facilitator_api1.gmail.com';
-	private $apiPass = '1395668722';
-	private $apiSig = 'A3zSw8K2PAYR8wwrNthANtGkEckrAA-YX73NgB1dKBZIs.ybocEczBLP';
-	private $appID = 'APP-80W284485P519543T';
-
 	private $apiUrl = 'https://svcs.sandbox.paypal.com/AdaptivePayments/';
 	private $paypalUrl = 'https://sandbox.paypal.com/websrc?cmd=_ap-payment&paykey=';
 
-	function __construct() {
+	function __construct($apiCredentials) {
+
+		$this->apiCredentials = $apiCredentials;
 
 		$this->headers = array(
-			'X-PAYPAL-SECURITY-USERID: ' . $this->apiUser,
-			'X-PAYPAL-SECURITY-PASSWORD: ' . $this->apiPass,
-			'X-PAYPAL-SECURITY-SIGNATURE: ' . $this->apiSig,
+			'X-PAYPAL-SECURITY-USERID: ' . $this->apiCredentials['username'],
+			'X-PAYPAL-SECURITY-PASSWORD: ' . $this->apiCredentials['password'],
+			'X-PAYPAL-SECURITY-SIGNATURE: ' . $this->apiCredentials['signature'],
+			'X-PAYPAL-APPLICATION-ID: ' . $this->apiCredentials['appID'],
 			'X-PAYPAL-REQUEST-DATA-FORMAT: JSON',
-			'X-PAYPAL-RESPONSE-DATA-FORMAT: JSON',
-			'X-PAYPAL-APPLICATION-ID: ' . $this->appID
+			'X-PAYPAL-RESPONSE-DATA-FORMAT: JSON'
 		);
 
 		$this->envelope = array(

@@ -11,17 +11,13 @@ if (!empty($_POST['function'])) {
 	if (file_exists('../data/config.php')) require('../data/config.php');
 	else exit('Error: Config not found!');
 
-	define('PP_CONFIG_PATH', '../data/' . $ppConfig);
-
-	require '../vendor/autoload.php';
 	require 'modules/db.php';
 	require 'modules/user.php';
 	require 'modules/paypal.php';
 
 	// Init modules
-	$database	= new Database($dbUser, $dbPassword, $dbHost, $dbName);
-	$ini		= parse_ini_file(PP_CONFIG_PATH . 'sdk_config.ini');
-	$paypal		= new PayPal();
+	$database	= new Database($dbCredentials);
+	$paypal		= new PayPal($apiCredentials);
 
 	switch ($_POST['function']) {
 
