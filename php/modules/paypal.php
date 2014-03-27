@@ -74,7 +74,7 @@ class PayPal {
 
 	}
 
-	private function setPaymentOptions($payKey) {
+	/*private function setPaymentOptions($payKey) {
 
 		$packet = array(
 			'payKey' => $payKey,
@@ -102,7 +102,7 @@ class PayPal {
 
 		return $this->paypalSend($packet, 'GetPaymentOptions');
 
-	}
+}*/
 
 	public function getLink() {
 

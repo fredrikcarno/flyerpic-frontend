@@ -8,12 +8,10 @@
 
 if (!empty($_POST['function'])) {
 
+	require 'autoload.php';
+
 	if (file_exists('../data/config.php')) require('../data/config.php');
 	else exit('Error: Config not found!');
-
-	require 'modules/db.php';
-	require 'modules/user.php';
-	require 'modules/paypal.php';
 
 	// Init modules
 	$database	= new Database($dbCredentials);
