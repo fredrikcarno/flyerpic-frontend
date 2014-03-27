@@ -18,9 +18,10 @@ if (!empty($_POST['function'])) {
 	require 'modules/user.php';
 	require 'modules/paypal.php';
 
-	// Connect
+	// Init modules
 	$database	= new Database($dbUser, $dbPassword, $dbHost, $dbName);
 	$ini		= parse_ini_file(PP_CONFIG_PATH . 'sdk_config.ini');
+	$paypal		= new PayPal();
 
 	switch ($_POST['function']) {
 
@@ -34,7 +35,7 @@ if (!empty($_POST['function'])) {
 								break;
 
 		case 'getPayPalLink':	if (isset($_POST['albumID']))
-									echo getPayPalLink($_POST['albumID']);
+									$paypal->splitPay();
 								break;
 
 	}

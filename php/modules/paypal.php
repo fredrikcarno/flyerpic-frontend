@@ -6,97 +6,81 @@
  * @copyright	2014 by Tobias Reich
  */
 
-function getContext($clientId, $clientSecret) {
+class PayPal {
 
-	$oauthCredential = new PayPal\Auth\OAuthTokenCredential($clientId, $clientSecret);
-	$apiContext		= new PayPal\Rest\ApiContext($oauthCredential);
+	var $apiUrl = 'https://svcs.sandbox.paypal.com/AdaptivePayments/';
+	var $paypalUrl = 'https://sandbox.paypal.com/websrc?cmd=_ap-payment&paykey=';
 
-	return $apiContext;
+	function __construct() {
 
-}
-
-function setRedirect($return, $cancel) {
-
-	$redirect = new PayPal\Api\RedirectUrls();
-	$redirect->setReturn_url($return);
-	$redirect->setCancel_url($cancel);
-
-	return $redirect;
-
-}
-
-function setPayer() {
-
-	$payer = new PayPal\Api\Payer();
-	$payer->setPayment_method('paypal');
-
-	return $payer;
-
-}
-
-function setTransaction($price, $currency = 'USD', $description = 'No description') {
-
-	$amount = new PayPal\Api\Amount();
-	$amount->setTotal($price);
-	$amount->setCurrency($currency);
-
-	$transaction = new PayPal\Api\Transaction();
-	$transaction->setAmount($amount);
-	$transaction->setDescription($description);
-
-	return $transaction;
-
-}
-
-function setPayment($redirect, $payer, $transaction) {
-
-	$payment = new PayPal\Api\Payment();
-	$payment->setIntent('sale');
-	$payment->setRedirect_urls($redirect);
-	$payment->setPayer($payer);
-	$payment->setTransactions(array($transaction));
-
-	return $payment;
-
-}
-
-function getPaymentLink($payment) {
-
-	$redirectUrl = null;
-
-	foreach ($payment->getLinks() as $link) {
-		if ($link->getRel() == 'approval_url') $redirectUrl = $link->getHref();
-	}
-
-	return $redirectUrl;
-
-}
-
-function getPayPalLink() {
-
-	global $ini;
-
-	$apiContext	= getContext($ini['acct1.ClientId'], $ini['acct1.ClientSecret']);
-	$redirect	= setRedirect('http://electerious.com/#return', 'http://electerious.com/#cancel');
-	$payer		= setPayer();
-	$transaction	= setTransaction('9', 'USD');
-	$payment		= setPayment($redirect, $payer, $transaction);
-
-	try {
-
-		$payment->create($apiContext);
-
-	} catch (PayPal\Exception\PPConnectionException $ex) {
-
-		echo 'hallo';
-		echo "Exception: " . $ex->getMessage() . PHP_EOL;
-		var_dump($ex->getData());
-		exit(1);
+		$this->headers = array(
+			'X-PAYPAL-SECURITY-USERID: tobias.reich.ich_api1.gmail.com',
+			'X-PAYPAL-SECURITY-PASSWORD: FZA63PGMTMJVHZBY',
+			'X-PAYPAL-SECURITY-SIGNATURE: Ag9fhnPqmW9cxAPg6zdjCOvAhbhRA6VAGLePCTZgc7Ymmfw-sifh6ZgE',
+			'X-PAYPAL-DEVICE-IPADDRESS: 127.0.0.1',
+			'X-PAYPAL-REQUEST-DATA-FORMAT: JSON',
+			'X-PAYPAL-RESPONSE-DATA-FORMAT: JSON',
+			'X-PAYPAL-APPLICATION-ID: APP-80W284485P519543T'
+		);
 
 	}
 
-	$redirectUrl = getPaymentLink($payment);
+	function getPaymentOptions($paykey) {
 
-	return $redirectUrl;
+	}
+
+	function setPaymentOptions() {
+
+	}
+
+	function _paypalSend($data, $call) {
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $this->apiUrl.$call);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, $this->headers);
+		curl_setopt($ch, CURLOPT_ENCODING, 'gzip');
+
+		var_dump(curl_exec($ch));
+
+		return json_decode(curl_exec($ch), true);
+
+	}
+
+	function splitPay() {
+
+		// Create the pay request
+		$createPacket = array(
+			'actionType' => 'PAY',
+			'currencyCode' => 'USD',
+			'receiverList' => array(
+				'receiver' => array(
+					array(
+						'amount' => '1.00',
+						'email' => 'tobias.reich.ich-primary@gmail.com'
+					),
+					array(
+						'amount' => '2.00',
+						'email' => 'tobias.reich.ich-second@gmail.com'
+					),
+				)
+			),
+			'returnUrl' => 'http://electerious.com/return.html',
+			'cancelUrl' => 'http://electerious.com/cancel.html',
+			'requestEnvelope' => array(
+				'errorLanguage' => 'en_US',
+				'detailLevel' => 'ReturnAll'
+			)
+		);
+
+		$response = $this->_paypalSend($createPacket, 'PAY');
+		var_dump($response);
+
+	}
 
 }
+
+?>
