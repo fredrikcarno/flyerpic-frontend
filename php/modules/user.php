@@ -22,7 +22,7 @@ class User {
 
 		if (!isset($this->database, $this->userID)) return null;
 
-		$query	= "SELECT * FROM lychee_users WHERE id = '$this->userID';";
+		$query	= "SELECT * FROM lychee_users WHERE id = '$this->userID' LIMIT 1;";
 		$result = $this->database->query($query);
 		$return = $result->fetch_assoc();
 

@@ -1,21 +1,32 @@
 this.content =
 
+	data:
+		user: null
+		album: null
+		photo: null
+
 	load:
 
 		user: (userID) ->
 
 			miniLychee.api false, "getUser&userID=#{ userID }", (data) ->
 
+				# Save data
+				content.data.user = data
+
 				# Set about
 				$('header img#logo').attr 'src', "data/user/#{ userID }.png"
 				$('header #name').html data.name
 
-				# Set price
-				$('header #buy .price').html data.priceperalbum
+				# Set button
+				button.set 'album', data.priceperalbum, data.currencysymbol, data.currencyposition
 
 		album: (albumID) ->
 
 			miniLychee.api true, "getAlbum&albumID=#{ albumID }&password=", (data) ->
+
+				# Save data
+				content.data.album = data
 
 				# Build content
 				html = ''
@@ -34,11 +45,14 @@ this.content =
 				content.display.album()
 
 				# Load user
-				content.load.user data.title.substr(0, 1)
+				content.load.user parseInt(data.title.substr(0, 2))
 
 		photo: (albumID, photoID) ->
 
 			miniLychee.api true, "getPhoto&photoID=#{ albumID }&albumID=#{ albumID }&password=", (data) ->
+
+				# Save data
+				content.data.photo = data
 
 				# Build and add content
 				$('#view').html content.build.image(data)
@@ -62,9 +76,12 @@ this.content =
 						$('#view').hide()
 					, 300
 
-			$('header #buy .type').html 'album'
 			$('header #about, header menu').show()
 			$('header #close').hide()
+
+			# Change button
+			if content.data.user?
+				button.set 'album', content.data.user.priceperalbum, content.data.user.currencysymbol, content.data.user.currencyposition
 
 		photo: ->
 
@@ -76,9 +93,12 @@ this.content =
 					.removeClass 'fadeOut'
 					.addClass 'fadeIn'
 
-			$('header #buy .type').html 'photo'
 			$('header #about, header menu').hide()
 			$('header #close').show()
+
+			# Change button
+			if content.data.user?
+				button.set 'photo', content.data.user.priceperphoto, content.data.user.currencysymbol, content.data.user.currencyposition
 
 	build:
 

@@ -92,6 +92,7 @@ header {
 		background-color: $cMain;
 		border-radius: 5px;
 		cursor: pointer;
+		display: none;
 
 		@include vendorize(transition, background-color $duration);
 

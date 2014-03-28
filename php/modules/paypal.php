@@ -46,21 +46,47 @@ class PayPal {
 
 	}
 
-	private function createPayRequest() {
+	private function calculateAmount($type, $user) {
+
+		if ($type==='album') {
+
+			$amount =  array(
+				'primary' => $user['priceperalbum'],
+				'secondary' => (string)round(($user['priceperalbum']/100)*$user['percentperprice'], 2)
+			);
+
+		} else if ($type==='photo') {
+
+			$amount =  array(
+				'primary' => $user['priceperphoto'],
+				'secondary' => (string)round(($user['priceperphoto']/100)*$user['percentperprice'], 2)
+			);
+
+		} else {
+
+			exit('Error: Type for payment unknown');
+
+		}
+
+		return $amount;
+
+	}
+
+	private function createPayRequest($amount, $user) {
 
 		$packet = array(
 			'actionType' => 'PAY',
-			'currencyCode' => 'USD',
+			'currencyCode' => $user['currencycode'],
 			'receiverList' => array(
 				'receiver' => array(
 					array(
-						'amount' => '5.00',
-						'email' => 'tobias.reich.ich-facilitator@gmail.com',
+						'amount' => $amount['primary'],
+						'email' => $user['primarymail'],
 						'primary' => 'true'
 					),
 					array(
-						'amount' => '2.00',
-						'email' => 'tobias.reich.ich-test@gmail.com',
+						'amount' => $amount['secondary'],
+						'email' => $user['secondarymail'],
 						'primary' => 'false'
 					)
 				)
@@ -102,15 +128,21 @@ class PayPal {
 
 		return $this->paypalSend($packet, 'GetPaymentOptions');
 
-}*/
+	}*/
 
-	public function getLink() {
+	public function getLink($type, $user) {
+
+		if (!isset($type, $user)) exit('Error: Type or user missing');
+
+		// Calculate amount
+		$amount		= $this->calculateAmount($type, $user);
 
 		// Create payment request
-		$response = $this->createPayRequest();
-		$payKey = $response['payKey'];
+		$response	= $this->createPayRequest($amount, $user);
+		$payKey		= @$response['payKey'];
 
-		if (!isset($payKey)) return false;
+		// Return link
+		if (!isset($payKey)) exit('Error: No payKey found');
 		else return $this->paypalUrl.$payKey;
 
 	}
