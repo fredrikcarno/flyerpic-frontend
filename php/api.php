@@ -8,9 +8,9 @@
 
 if (!empty($_POST['function'])) {
 
-	require 'autoload.php';
+	require(__DIR__ . '/autoload.php');
 
-	if (file_exists('../data/config.php')) require('../data/config.php');
+	if (file_exists(__DIR__ . '/../data/config.php')) require(__DIR__ . '/../data/config.php');
 	else exit('Error: Config not found!');
 
 	// Connect to database
