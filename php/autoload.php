@@ -6,8 +6,10 @@
  * @copyright	2014 by Tobias Reich
  */
 
-function __autoload($class_name) {
-	require './modules/' . $class_name . '.php';
+function lycheeMiniAutoloader($class_name) {
+	require __DIR__ . '/modules/' . $class_name . '.php';
 }
+
+spl_autoload_register('lycheeMiniAutoloader');
 
 ?>
