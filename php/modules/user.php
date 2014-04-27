@@ -1,24 +1,24 @@
 <?php
 
-/**
- * @name		User Module
- * @author		Tobias Reich
- * @copyright	2014 by Tobias Reich
- */
+###
+# @name			User Module
+# @author		Tobias Reich
+# @copyright	2014 by Tobias Reich
+###
 
 class User {
 
 	private $database = null;
 	private $userID = null;
 
-	function __construct($database, $userID) {
+	public function __construct($database, $userID) {
 
 		$this->database = $database;
 		$this->userID = $userID;
 
 	}
 
-	function get() {
+	public function get() {
 
 		if (!isset($this->database, $this->userID)) return null;
 

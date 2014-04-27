@@ -1,15 +1,15 @@
 <?php
 
-/**
- * @name		PayPal Module
- * @author		Tobias Reich
- * @copyright	2014 by Tobias Reich
- */
+###
+# @name			PayPal Module
+# @author		Tobias Reich
+# @copyright	2014 by Tobias Reich
+###
 
 class PayPal {
 
-	private $apiUrl = 'https://svcs.sandbox.paypal.com/AdaptivePayments/';
-	private $paypalUrl = 'https://sandbox.paypal.com/websrc?cmd=_ap-payment&paykey=';
+	private $apiUrl		= 'https://svcs.sandbox.paypal.com/AdaptivePayments/';
+	private $paypalUrl	= 'https://sandbox.paypal.com/websrc?cmd=_ap-payment&paykey=';
 
 	function __construct($apiCredentials) {
 
@@ -134,14 +134,14 @@ class PayPal {
 
 		if (!isset($type, $user)) exit('Error: Type or user missing');
 
-		// Calculate amount
+		# Calculate amount
 		$amount		= $this->calculateAmount($type, $user);
 
-		// Create payment request
+		# Create payment request
 		$response	= $this->createPayRequest($amount, $user);
 		$payKey		= @$response['payKey'];
 
-		// Return link
+		# Return link
 		if (!isset($payKey)) exit('Error: No payKey found');
 		else return $this->paypalUrl.$payKey;
 
