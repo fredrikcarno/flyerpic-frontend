@@ -8,13 +8,13 @@
 
 class User {
 
-	private $database = null;
-	private $userID = null;
+	private $database	= null;
+	private $userID		= null;
 
 	public function __construct($database, $userID) {
 
-		$this->database = $database;
-		$this->userID = $userID;
+		$this->database	= $database;
+		$this->userID	= $userID;
 
 	}
 
@@ -23,8 +23,8 @@ class User {
 		if (!isset($this->database, $this->userID)) return null;
 
 		$query	= "SELECT * FROM lychee_users WHERE id = '$this->userID' LIMIT 1;";
-		$result = $this->database->query($query);
-		$return = $result->fetch_assoc();
+		$result	= $this->database->query($query);
+		$return	= $result->fetch_assoc();
 
 		return $return;
 
