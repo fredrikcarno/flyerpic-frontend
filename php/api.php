@@ -19,11 +19,11 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 	# Connect to database
 	$database = new Database($dbCredentials);
 
-	# Avoid notice
-	if (!isset($_POST['function']))	$_POST['function']	= '';
-	if (!isset($_GET['function']))	$_GET['function']	= '';
+	# Function for switch statement
+	if (isset($_POST['function'])) $fn = $_POST['function'];
+	else $fn = $_GET['function'];
 
-	switch ($_POST['function']) {
+	switch ($fn) {
 
 		case 'getLychee':		echo $lychee;
 								break;
@@ -58,10 +58,6 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 
 								}
 								break;
-
-	}
-
-	switch ($_GET['function']) {
 
 		case 'setPayment':	if (isset($_SESSION['payKey'])&&$_SESSION['payKey']!=='') {
 
