@@ -1,20 +1,27 @@
 <?php
 
-/**
- * @name		API
- * @author		Tobias Reich
- * @copyright	2014 by Tobias Reich
- */
+###
+# @name			API
+# @author		Tobias Reich
+# @copyright	2014 by Tobias Reich
+###
 
-if (!empty($_POST['function'])) {
+if ((isset($_POST['function'])&&!empty($_POST['function']))||
+	(isset($_GET['function'])&&!empty($_GET['function']))) {
+
+	session_start();
 
 	require(__DIR__ . '/autoload.php');
 
 	if (file_exists(__DIR__ . '/../data/config.php')) require(__DIR__ . '/../data/config.php');
 	else exit('Error: Config not found!');
 
-	// Connect to database
+	# Connect to database
 	$database = new Database($dbCredentials);
+
+	# Avoid notice
+	if (!isset($_POST['function']))	$_POST['function']	= '';
+	if (!isset($_GET['function']))	$_GET['function']	= '';
 
 	switch ($_POST['function']) {
 
@@ -29,22 +36,59 @@ if (!empty($_POST['function'])) {
 								}
 								break;
 
-		case 'getPayPalLink':	if (isset($_POST['albumID'])) {
+		case 'getPayPalLink':	$_SESSION['url'] = $_SERVER['HTTP_REFERER'];
+
+								if (isset($_POST['albumID'])) {
 
 									$album	= new Album($database->get(), $_POST['albumID']);
 									$user	= new User($database->get(), $album->getUserID());
 									$paypal	= new PayPal($apiCredentials);
-									echo $paypal->getLink('album', $user->get());
+									echo $paypal->getLink('album', $user->get(), $album->getID());
 
 								} else if (isset($_POST['photoID'])) {
 
 									$photo	= new Photo($database->get(), $_POST['photoID']);
 									$user	= new User($database->get(), $photo->getUserID());
 									$paypal	= new PayPal($apiCredentials);
-									echo $paypal->getLink('photo', $user->get());
+									echo $paypal->getLink('photo', $user->get(), $photo->getID());
+
+								} else {
+
+									exit('Error: AlbumID or PhotoID not found');
 
 								}
 								break;
+
+	}
+
+	switch ($_GET['function']) {
+
+		case 'setPayment&nbsp;':	if (isset($_SESSION['payKey'])&&$_SESSION['payKey']!=='') {
+
+								if (isset($_SESSION['payAlbumID'])) {
+
+									$album	= new Album($database->get(), $_SESSION['payAlbumID']);
+									$paypal	= new PayPal($apiCredentials);
+									$payed	= $paypal->checkPayment($_SESSION['payKey']);
+
+									if ($payed===true) $result = $album->setPayment();
+									else $result = false;
+
+									if ($payed===false) $status = 'unverified';
+									if ($payed===true&&$result===false) $status = 'locked';
+									if ($payed===true&&$result===true) $status = 'success';
+
+									header('Location: ' . $_SESSION['url'] . '#' . $_SESSION['payAlbumID'] . '/-/' . $status);
+									exit();
+
+								} else exit('Error: AlbumID not found. Please contact the support with this message.');
+
+							} else {
+
+								exit('Error: PaymentKey not found. Please contact the support with this message.');
+
+							}
+							break;
 
 	}
 

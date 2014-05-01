@@ -11,6 +11,9 @@ class PayPal {
 	private $apiUrl		= 'https://svcs.sandbox.paypal.com/AdaptivePayments/';
 	private $paypalUrl	= 'https://sandbox.paypal.com/websrc?cmd=_ap-payment&paykey=';
 
+	private $returnUrl	= '';
+	private $cancelUrl	= '';
+
 	function __construct($apiCredentials) {
 
 		$this->apiCredentials = $apiCredentials;
@@ -62,17 +65,19 @@ class PayPal {
 				'secondary' => (string)round(($user['priceperphoto']/100)*$user['percentperprice'], 2)
 			);
 
-		} else {
-
-			exit('Error: Type for payment unknown');
-
 		}
 
+		if (!isset($amount)) return false;
 		return $amount;
 
 	}
 
 	private function createPayRequest($amount, $user) {
+
+		if (!isset($_SERVER['HTTP_REFERER'], $amount, $user)) exit('Error: Referer, amount or user missing');
+
+		$returnUrl = $_SERVER['HTTP_REFERER'] . '/php/api.php?function=setPayment';
+		$cancelUrl = $_SERVER['HTTP_REFERER'];
 
 		$packet = array(
 			'actionType' => 'PAY',
@@ -91,8 +96,8 @@ class PayPal {
 					)
 				)
 			),
-			'returnUrl' => 'http://electerious.com/return.html',
-			'cancelUrl' => 'http://electerious.com/cancel.html',
+			'returnUrl' => $returnUrl,
+			'cancelUrl' => $cancelUrl,
 			'requestEnvelope' => $this->envelope
 		);
 
@@ -117,33 +122,47 @@ class PayPal {
 
 		return $this->paypalSend($packet, 'SetPaymentOptions');
 
-	}
+	}*/
 
-	private function getPaymentOptions($payKey) {
+	public function checkPayment($payKey) {
 
 		$packet = array(
 			'payKey' => $payKey,
 			'requestEnvelope' => $this->envelope
 		);
 
-		return $this->paypalSend($packet, 'GetPaymentOptions');
+		$response	= $this->paypalSend($packet, 'GetPaymentOptions');
+		$payed		= (@$response["responseEnvelope"]["ack"] === 'Success' ? true : false);
 
-	}*/
+		if ($payed!==true) return false;
+		return true;
 
-	public function getLink($type, $user) {
+	}
 
-		if (!isset($type, $user)) exit('Error: Type or user missing');
+	public function getLink($type, $user, $id) {
+
+		if (!isset($type, $user, $id)) exit('Error: Type, user or id missing');
 
 		# Calculate amount
-		$amount		= $this->calculateAmount($type, $user);
+		$amount = $this->calculateAmount($type, $user);
+		if ($amount===false) exit('Error: Can not calculate amount');
 
 		# Create payment request
 		$response	= $this->createPayRequest($amount, $user);
 		$payKey		= @$response['payKey'];
 
-		# Return link
+		# Check payKey
 		if (!isset($payKey)) exit('Error: No payKey found');
-		else return $this->paypalUrl.$payKey;
+
+		# Save info
+		$_SESSION['payKey']	= $payKey;
+		$_SESSION['payUrl']	= $this->paypalUrl . $payKey;
+		$_SESSION['payType']	= $type;
+		if ($type==='album') $_SESSION['payAlbumID'] = $id;
+		if ($type==='photo') $_SESSION['payPhotoID'] = $id;
+
+		# Return payKey
+		return $_SESSION['payUrl'];
 
 	}
 
