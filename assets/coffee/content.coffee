@@ -60,6 +60,46 @@ this.content =
 				# Show photo
 				content.display.photo()
 
+		payment: (albumID, photoID, status) ->
+
+			switch status
+
+				when 'unverified'
+
+					###
+					# Status:		unverified
+					# Description:	The payment was not successful, because of a PayPal error or canceled payment.
+					#				The customer still needs to purchase the album/photo.
+					###
+					alert 'unverified'
+
+				when 'locked'
+
+					###
+					# Status:		locked
+					# Description:	The payment was successful, but the album/photos could not be marked as paid.
+					#				The customer still sees the watermarked photos and should contact the support.
+					###
+					alert 'locked'
+
+				when 'success'
+
+					###
+					# Status:		success
+					# Description:	The payment was successful and the customer now sees the unwatermarked photos.
+					#				A dialog will show up, prompting the customer to download the album/photo.
+					###
+					alert 'success'
+
+				else
+
+					###
+					# Status:		-
+					# Description:	An unknown error happened.
+					#				A dialog will show up, prompting the customer to contact the support.
+					###
+					alert '-'
+
 	display:
 
 		album: ->

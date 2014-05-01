@@ -8,8 +8,14 @@ this.miniLychee =
 
 		if hash[0]? then albumID = hash[0]
 		if hash[1]? then photoID = hash[1]
+		if hash[2]? then status = hash[2]
 
-		if albumID? and photoID?
+		if albumID? and photoID? and status?
+
+			# After payment
+			content.load.payment albumID, photoID, status
+
+		if albumID? and photoID? and photoID not '-'
 
 			# Load
 			content.load.album albumID
