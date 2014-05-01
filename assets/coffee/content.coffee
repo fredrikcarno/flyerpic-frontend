@@ -23,7 +23,7 @@ this.content =
 
 		album: (albumID) ->
 
-			miniLychee.api true, "getAlbum&albumID=#{ albumID }&password=", (data) ->
+			miniLychee.api false, "getAlbum&albumID=#{ albumID }&password=", (data) ->
 
 				# Save data
 				content.data.album = data

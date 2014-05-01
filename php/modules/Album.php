@@ -17,6 +17,61 @@ class Album {
 		$this->albumID	= $albumID;
 
 	}
+	public function get() {
+
+		# Check dependencies
+		if (!isset($this->database, $this->albumID)) exit('Error: Database or albumID missing');
+
+		# Get album information
+		$albums = $this->database->query("SELECT * FROM lychee_albums WHERE id = '$this->albumID' LIMIT 1;");
+		$return = $albums->fetch_assoc();
+		$return['sysdate']		= date('d M. Y', $return['sysstamp']);
+		$return['password']		= ($return['password']=='' ? false : true);
+
+		# Get photos
+		$photos				= $this->database->query("SELECT id, title, tags, public, star, album, thumbUrl FROM lychee_photos WHERE album = '$this->albumID'");
+		$previousPhotoID	= '';
+		while ($photo = $photos->fetch_assoc()) {
+
+			# Parse
+			$photo['sysdate']			= date('d F Y', substr($photo['id'], 0, -4));
+			$photo['previousPhoto']		= $previousPhotoID;
+			$photo['nextPhoto']		= '';
+
+			if ($previousPhotoID!=='') $return['content'][$previousPhotoID]['nextPhoto'] = $photo['id'];
+			$previousPhotoID = $photo['id'];
+
+			# Add to return
+			$return['content'][$photo['id']] = $photo;
+
+		}
+
+		if ($photos->num_rows===0) {
+
+			# Album empty
+			$return['content'] = false;
+
+		} else {
+
+			# Enable next and previous for the first and last photo
+			$lastElement	= end($return['content']);
+			$lastElementId	= $lastElement['id'];
+			$firstElement	= reset($return['content']);
+			$firstElementId	= $firstElement['id'];
+
+			if ($lastElementId!==$firstElementId) {
+				$return['content'][$lastElementId]['nextPhoto']			= $firstElementId;
+				$return['content'][$firstElementId]['previousPhoto']	= $lastElementId;
+			}
+
+		}
+
+		$return['id']	= $this->albumID;
+		$return['num']	= $photos->num_rows;
+
+		return $return;
+
+	}
 
 	public function getID() {
 

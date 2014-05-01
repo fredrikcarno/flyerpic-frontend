@@ -36,6 +36,14 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 								}
 								break;
 
+		case 'getAlbum':		if (isset($_POST['albumID'])) {
+
+									$album	= new Album($database->get(), $_POST['albumID']);
+									echo json_encode($album->get());
+
+								}
+								break;
+
 		case 'getPayPalLink':	$_SESSION['url'] = $_SERVER['HTTP_REFERER'];
 
 								if (isset($_POST['albumID'])) {
