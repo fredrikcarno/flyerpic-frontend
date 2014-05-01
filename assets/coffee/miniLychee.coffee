@@ -15,7 +15,7 @@ this.miniLychee =
 			# After payment
 			content.load.payment albumID, photoID, status
 
-		if albumID? and photoID? and photoID not '-'
+		if albumID? and photoID? and photoID not ''
 
 			# Load
 			content.load.album albumID

@@ -63,9 +63,12 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 
 	switch ($_GET['function']) {
 
-		case 'setPayment&nbsp;':	if (isset($_SESSION['payKey'])&&$_SESSION['payKey']!=='') {
+		case 'setPayment':	if (isset($_SESSION['payKey'])&&$_SESSION['payKey']!=='') {
 
-								if (isset($_SESSION['payAlbumID'])) {
+								if (!isset($_SESSION['payType']))
+									exit('Error: Type of payment not found. Please contact the support with this message.');
+
+								if ($_SESSION['payType']==='album') {
 
 									$album	= new Album($database->get(), $_SESSION['payAlbumID']);
 									$paypal	= new PayPal($apiCredentials);
@@ -78,10 +81,30 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 									if ($payed===true&&$result===false) $status = 'locked';
 									if ($payed===true&&$result===true) $status = 'success';
 
-									header('Location: ' . $_SESSION['url'] . '#' . $_SESSION['payAlbumID'] . '/-/' . $status);
+									header('Location: ' . $_SESSION['url'] . '#' . $_SESSION['payAlbumID'] . '//' . $status);
 									exit();
 
-								} else exit('Error: AlbumID not found. Please contact the support with this message.');
+								} else if ($_SESSION['payType']==='photo') {
+
+									$photo	= new Photo($database->get(), $_SESSION['payPhotoID']);
+									$paypal	= new PayPal($apiCredentials);
+									$payed	= $paypal->checkPayment($_SESSION['payKey']);
+
+									if ($payed===true) $result = $photo->setPayment();
+									else $result = false;
+
+									if ($payed===false) $status = 'unverified';
+									if ($payed===true&&$result===false) $status = 'locked';
+									if ($payed===true&&$result===true) $status = 'success';
+
+									header('Location: ' . $_SESSION['url'] . '#' . $_SESSION['payAlbumID'] . '/' . $_SESSION['payPhoto&nbsp;&nbsp;&nbsp;&nbsp;ID'] . '/' . $status);
+									exit();
+
+								} else {
+
+									exit('Error: AlbumID not found. Please contact the support with this message.');
+
+								}
 
 							} else {
 
