@@ -12,7 +12,14 @@ this.miniLychee =
 
 		if albumID? and photoID? and status?
 
+			###
 			# After payment
+			###
+
+			# Load
+			content.load.album albumID
+
+			# Show modal
 			content.load.payment albumID, photoID, status
 
 		if albumID? and photoID? and photoID not ''

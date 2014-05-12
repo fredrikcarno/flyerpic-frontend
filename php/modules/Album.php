@@ -112,7 +112,10 @@ class Album {
 
 		}
 
-		if ($error===true) return false;
+		$query	= "UPDATE lychee_albums SET description = 'payed' WHERE id = '$this->albumID';";
+		$result	= $this->database->query($query);
+
+		if (!$result||$error===true) return false;
 		return true;
 
 	}

@@ -18,8 +18,34 @@ this.content =
 				$('header img#logo').attr 'src', "data/user/#{ userID }.png"
 				$('header #name').html data.name
 
+				###
 				# Set button
-				button.set 'album', data.priceperalbum, data.currencysymbol, data.currencyposition
+				###
+
+				if	content.data.album?.description? and
+					content.data.album.description.indexOf('payed') isnt -1
+
+						# Show download button
+						button.set 'download'
+						return true
+
+				else if content.data.album.description.indexOf('payed') is -1
+
+					# Show buy button for album
+					button.set 'album', data.priceperalbum, data.currencysymbol, data.currencyposition
+
+				if	content.data.photo?.tags? and
+					content.data.photo.tags.indexOf('payed') isnt -1
+
+						# Show download button
+						button.set 'download'
+						return true
+
+				else if content.data.photo.tags.indexOf('payed') is -1
+
+					# Show buy button for album
+					button.set 'photo', data.priceperphoto, data.currencysymbol, data.currencyposition
+
 
 		album: (albumID) ->
 
@@ -89,7 +115,21 @@ this.content =
 					# Description:	The payment was successful and the customer now sees the unwatermarked photos.
 					#				A dialog will show up, prompting the customer to download the album/photo.
 					###
-					alert 'success'
+
+					modal.show
+						body:	"""
+								<p>Congratulation! You can now download and use your photos wherever and how often you want.</p>
+								"""
+						closable: true
+						buttons:
+							cancel:
+								title: 'Cancel'
+								fn: -> modal.close()
+							action:
+								title: 'Download your photos'
+								color: 'normal'
+								icon: 'arrow-down-a'
+								fn: -> modal.close()
 
 				else
 
@@ -121,7 +161,17 @@ this.content =
 
 			# Change button
 			if content.data.user?
-				button.set 'album', content.data.user.priceperalbum, content.data.user.currencysymbol, content.data.user.currencyposition
+
+				if	content.data.album?.description? and
+					content.data.album.description.indexOf('payed') isnt -1
+
+						# Show download button
+						button.set 'download'
+
+				else
+
+					# Show buy button
+					button.set 'album', content.data.user.priceperalbum, content.data.user.currencysymbol, content.data.user.currencyposition
 
 		photo: ->
 
@@ -138,7 +188,16 @@ this.content =
 
 			# Change button
 			if content.data.user?
-				button.set 'photo', content.data.user.priceperphoto, content.data.user.currencysymbol, content.data.user.currencyposition
+				if	content.data.photo?.tags? and
+					content.data.photo.tags.indexOf('payed') isnt -1
+
+						# Show download button
+						button.set 'download'
+
+				else
+
+					# Show buy button
+					button.set 'photo', content.data.user.priceperphoto, content.data.user.currencysymbol, content.data.user.currencyposition
 
 	build:
 

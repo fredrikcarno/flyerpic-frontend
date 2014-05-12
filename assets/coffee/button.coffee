@@ -16,30 +16,48 @@ this.button =
 			preCurrencySymbol	= ''
 			afterCurrencySymbol	= currencySymbol
 
-		# Build
-		html =	"""
-				<span class="icon ion-pricetag"></span>Buy #{ type } for #{ preCurrencySymbol }#{ price }#{ afterCurrencySymbol }
-				"""
+		if type is 'download'
+
+			# Build download button
+			html =	"""
+					<span class="icon ion-arrow-down-a"></span>Download
+					"""
+
+		else
+
+			# Build buy button
+			html =	"""
+					<span class="icon ion-pricetag"></span>Buy #{ type } for #{ preCurrencySymbol }#{ price }#{ afterCurrencySymbol }
+					"""
 
 		# Add content
 		$(button._name).html html
 
 		# Set click
 		$(button._name).off 'click'
-		if type is 'album' then $(button._name).on 'click', -> button.getLink('album', content.data.album.id)
-		if type is 'photo' then $(button._name).on 'click', -> button.getLink('photo', content.data.photo.id)
+		switch type
+			when 'album' then $(button._name).on 'click', -> button.getLink('album', content.data.album.id)
+			when 'photo' then $(button._name).on 'click', -> button.getLink('photo', content.data.photo.id)
+			when 'download' then $(button._name).on 'click', -> button.getLink('download', content.data.album.id)
 
 		# Show button
 		$(button._name).show()
 
 	getLink: (type, id) ->
 
-		$(button._name).html 'Loading ...'
+		switch type
 
-		if type is 'album'
+			when 'album'
 
-			miniLychee.api false, "getPayPalLink&albumID=#{ id }", (data) -> window.location.href = data
+				$(button._name).html 'Loading ...'
+				miniLychee.api false, "getPayPalLink&albumID=#{ id }", (data) -> window.location.href = data
 
-		else if type is 'photo'
+			when 'photo'
 
-			miniLychee.api false, "getPayPalLink&photoID=#{ id }", (data) -> window.location.href = data
+				$(button._name).html 'Loading ...'
+				miniLychee.api false, "getPayPalLink&photoID=#{ id }", (data) -> window.location.href = data
+
+			when 'download'
+
+				link = 'http://google.de'
+				window.location.href = link
