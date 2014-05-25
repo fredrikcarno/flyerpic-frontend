@@ -36,9 +36,9 @@ class Album {
 			if (strpos($photo['tags'], 'watermarked')!==false) {
 
 				# Is a watermarked photo
-				if ($return['description']==='payed') {
+				if (strpos($photo['tags'], 'payed')!==false) {
 
-					# Album bought
+					# Photo bought
 					continue;
 
 				}
@@ -46,9 +46,9 @@ class Album {
 			} else {
 
 				# Is *not* a watermarked photo
-				if ($return['description']!=='payed') {
+				if (strpos($photo['tags'], 'payed')===false) {
 
-					# Album *not* bought
+					# Photo *not* bought
 					continue;
 
 				}
