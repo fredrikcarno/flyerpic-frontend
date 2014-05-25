@@ -33,6 +33,28 @@ class Album {
 		$previousPhotoID	= '';
 		while ($photo = $photos->fetch_assoc()) {
 
+			if (strpos($photo['tags'], 'watermarked')!==false) {
+
+				# Is a watermarked photo
+				if ($return['description']==='payed') {
+
+					# Album bought
+					continue;
+
+				}
+
+			} else {
+
+				# Is *not* a watermarked photo
+				if ($return['description']!=='payed') {
+
+					# Album *not* bought
+					continue;
+
+				}
+
+			}
+
 			# Parse
 			$photo['sysdate']			= date('d F Y', substr($photo['id'], 0, -4));
 			$photo['previousPhoto']		= $previousPhotoID;
