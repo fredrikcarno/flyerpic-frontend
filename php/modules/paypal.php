@@ -67,6 +67,8 @@ class PayPal {
 
 		}
 
+		# TODO: check if everything is specified
+
 		if (!isset($amount)) return false;
 		return $amount;
 
@@ -75,6 +77,8 @@ class PayPal {
 	private function createPayRequest($amount, $user) {
 
 		if (!isset($_SERVER['HTTP_REFERER'], $amount, $user)) exit('Error: Referer, amount or user missing');
+
+		# TODO: check if everything is specified (primarymail, secondarymail)
 
 		$returnUrl = $_SERVER['HTTP_REFERER'] . '/php/api.php?function=setPayment';
 		$cancelUrl = $_SERVER['HTTP_REFERER'];
@@ -155,8 +159,8 @@ class PayPal {
 		if (!isset($payKey)) exit('Error: No payKey found');
 
 		# Save info
-		$_SESSION['payKey']	= $payKey;
-		$_SESSION['payUrl']	= $this->paypalUrl . $payKey;
+		$_SESSION['payKey']		= $payKey;
+		$_SESSION['payUrl']		= $this->paypalUrl . $payKey;
 		$_SESSION['payType']	= $type;
 		if ($type==='album') $_SESSION['payAlbumID'] = $id;
 		if ($type==='photo') $_SESSION['payPhotoID'] = $id;

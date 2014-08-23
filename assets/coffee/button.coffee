@@ -50,14 +50,19 @@ this.button =
 			when 'album'
 
 				$(button._name).html 'Loading ...'
-				miniLychee.api false, "getPayPalLink&albumID=#{ id }", (data) -> window.location.href = data
+				miniLychee.api false, "getPayPalLink&albumID=#{ id }", (data) -> button.openLink data
 
 			when 'photo'
 
 				$(button._name).html 'Loading ...'
-				miniLychee.api false, "getPayPalLink&photoID=#{ id }", (data) -> window.location.href = data
+				miniLychee.api false, "getPayPalLink&photoID=#{ id }", (data) -> button.openLink data
 
 			when 'download'
 
 				link = 'http://google.de'
-				window.location.href = link
+				button.openLink link
+
+	openLink: (data) ->
+
+		# TODO: Check if data is a link
+		window.location.href = data
