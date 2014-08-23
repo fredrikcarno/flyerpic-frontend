@@ -204,7 +204,7 @@ this.content =
 		photo: (data) ->
 
 			"""
-			<img class="photo fadeIn" src="#{ miniLychee.master }uploads/thumb/#{ data.thumbUrl }" width="200" height="200" onClick="window.content.load.photo(#{ data.id })">
+			<img class="photo fadeIn" src="#{ miniLychee.master }#{ data.thumbUrl }" width="200" height="200" onClick="window.content.load.photo(#{ data.id })">
 			"""
 
 		image: (data) ->
