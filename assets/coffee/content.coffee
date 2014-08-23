@@ -210,5 +210,5 @@ this.content =
 		image: (data) ->
 
 			"""
-			<div id="image" style="background-image: url('#{ miniLychee.master }uploads/big/#{ data.url }')"></div>
+			<div id="image" style="background-image: url('#{ miniLychee.master }#{ data.url }')"></div>
 			"""
