@@ -48,7 +48,7 @@ class Photo {
 		$result	= $this->database->query($query);
 		$result	= $result->fetch_assoc();
 		$tags	= @split(',', $result['tags']);
-		$tag		= @$tags[0];
+		$tag	= @$tags[0];
 
 		if (!isset($tag)||$tag==='') return false;
 

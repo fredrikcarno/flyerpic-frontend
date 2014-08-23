@@ -27,6 +27,7 @@ class Album {
 		$return = $albums->fetch_assoc();
 		$return['sysdate']	= date('d M. Y', $return['sysstamp']);
 		$return['password']	= ($return['password']=='' ? false : true);
+		$return['userID']	= $this->getUserID();
 		$return['content']	= [];
 
 		# Get photos
@@ -114,7 +115,18 @@ class Album {
 		$return	= $result->fetch_assoc();
 
 		if (!isset($return['title'])) exit('Error: Album title not found');
-		else return substr($return['title'], 0, 2);
+		else {
+
+			$title = substr($return['title'], 0, 2);
+
+			$from = array("a", "b", "d", "e", "f", "g", "h", "j", "k", "m");
+			$to = array("0", "1", "2", "3", "4", "5", "6", "7", "8", "9");
+
+			$title = str_replace($from, $to, $title);
+
+			return $title;
+
+		};
 
 	}
 

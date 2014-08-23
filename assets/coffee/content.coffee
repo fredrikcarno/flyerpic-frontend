@@ -71,7 +71,7 @@ this.content =
 				content.display.album()
 
 				# Load user
-				content.load.user parseInt(data.title.substr(0, 2))
+				content.load.user data.userID
 
 		photo: (albumID, photoID) ->
 
