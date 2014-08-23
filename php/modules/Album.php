@@ -25,8 +25,9 @@ class Album {
 		# Get album information
 		$albums = $this->database->query("SELECT * FROM lychee_albums WHERE id = '$this->albumID' LIMIT 1;");
 		$return = $albums->fetch_assoc();
-		$return['sysdate']		= date('d M. Y', $return['sysstamp']);
-		$return['password']		= ($return['password']=='' ? false : true);
+		$return['sysdate']	= date('d M. Y', $return['sysstamp']);
+		$return['password']	= ($return['password']=='' ? false : true);
+		$return['content']	= [];
 
 		# Get photos
 		$photos				= $this->database->query("SELECT id, title, tags, public, star, album, thumbUrl FROM lychee_photos WHERE album = '$this->albumID'");
@@ -36,6 +37,7 @@ class Album {
 			if (strpos($photo['tags'], 'watermarked')!==false) {
 
 				# Is a watermarked photo
+				# Check if user bought the photo. If so, don't show the watermarked-photo.
 				if (strpos($photo['tags'], 'payed')!==false) {
 
 					# Photo bought
@@ -46,6 +48,7 @@ class Album {
 			} else {
 
 				# Is *not* a watermarked photo
+				# Check if user bought the photo. If not, don't show the original-photo.
 				if (strpos($photo['tags'], 'payed')===false) {
 
 					# Photo *not* bought
@@ -58,7 +61,7 @@ class Album {
 			# Parse
 			$photo['sysdate']			= date('d F Y', substr($photo['id'], 0, -4));
 			$photo['previousPhoto']		= $previousPhotoID;
-			$photo['nextPhoto']		= '';
+			$photo['nextPhoto']			= '';
 
 			if ($previousPhotoID!=='') $return['content'][$previousPhotoID]['nextPhoto'] = $photo['id'];
 			$previousPhotoID = $photo['id'];
@@ -68,7 +71,7 @@ class Album {
 
 		}
 
-		if ($photos->num_rows===0) {
+		if (count($return['content'])<=0) {
 
 			# Album empty
 			$return['content'] = false;
