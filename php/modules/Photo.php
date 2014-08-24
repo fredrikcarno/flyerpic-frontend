@@ -20,14 +20,25 @@ class Photo {
 
 	public function getID() {
 
-		if (!isset($this->photoID)) return false;
+		if (!isset($this->photoID)) {
+
+			Log::notice($this->database, __METHOD__, __LINE__, 'Could not return id of photo');
+			return false;
+
+		}
+
 		return $this->photoID;
 
 	}
 
 	public function getUserID() {
 
-		if (!isset($this->database, $this->photoID)) exit('Error: Database or photoID missing');
+		if (!isset($this->database, $this->photoID)) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Database or photoID missing');
+			exit('Error: Database or photoID missing');
+
+		}
 
 		$query	= "SELECT * FROM lychee_photos WHERE id = '$this->photoID' LIMIT 1;";
 		$result	= $this->database->query($query);
@@ -42,7 +53,12 @@ class Photo {
 
 	public function setPayment() {
 
-		if (!isset($this->database, $this->photoID)) return false;
+		if (!isset($this->database, $this->photoID)) {
+
+			Log::notice($this->database, __METHOD__, __LINE__, 'Missing database or photoID');
+			return false;
+
+		}
 
 		$query	= "SELECT tags FROM lychee_photos WHERE id = '$this->photoID';";
 		$result	= $this->database->query($query);
@@ -50,7 +66,12 @@ class Photo {
 		$tags	= @split(',', $result['tags']);
 		$tag	= @$tags[0];
 
-		if (!isset($tag)||$tag==='') return false;
+		if (!isset($tag)||$tag==='') {
+
+			Log::notice($this->database, __METHOD__, __LINE__, 'Could not find photos which belong together to mark them as payed');
+			return false;
+
+		}
 
 		$query	= "UPDATE lychee_photos SET tags = CONCAT(tags, ',payed') WHERE tags LIKE '$tag%';";
 		$result	= $this->database->query($query);

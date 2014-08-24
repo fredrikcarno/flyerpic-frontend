@@ -50,14 +50,14 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 
 									$album	= new Album($database->get(), $_POST['albumID']);
 									$user	= new User($database->get(), $album->getUserID());
-									$paypal	= new PayPal($apiCredentials);
+									$paypal	= new PayPal($database->get(), $apiCredentials);
 									echo $paypal->getLink('album', $user->get(), $album->getID());
 
 								} else if (isset($_POST['photoID'])) {
 
 									$photo	= new Photo($database->get(), $_POST['photoID']);
 									$user	= new User($database->get(), $photo->getUserID());
-									$paypal	= new PayPal($apiCredentials);
+									$paypal	= new PayPal($database->get(), $apiCredentials);
 									echo $paypal->getLink('photo', $user->get(), $photo->getID());
 
 								} else {
@@ -75,7 +75,7 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 								if ($_SESSION['payType']==='album') {
 
 									$album	= new Album($database->get(), $_SESSION['payAlbumID']);
-									$paypal	= new PayPal($apiCredentials);
+									$paypal	= new PayPal($database->get(), $apiCredentials);
 									$payed	= $paypal->checkPayment($_SESSION['payKey']);
 
 									if ($payed===true) $result = $album->setPayment();
@@ -91,7 +91,7 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 								} else if ($_SESSION['payType']==='photo') {
 
 									$photo	= new Photo($database->get(), $_SESSION['payPhotoID']);
-									$paypal	= new PayPal($apiCredentials);
+									$paypal	= new PayPal($database->get(), $apiCredentials);
 									$payed	= $paypal->checkPayment($_SESSION['payKey']);
 
 									if ($payed===true) $result = $photo->setPayment();

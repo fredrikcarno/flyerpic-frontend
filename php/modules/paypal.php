@@ -8,21 +8,40 @@
 
 class PayPal {
 
+	private $database	= null;
+
 	private $apiUrl		= 'https://svcs.sandbox.paypal.com/AdaptivePayments/';
 	private $paypalUrl	= 'https://sandbox.paypal.com/websrc?cmd=_ap-payment&paykey=';
 
 	private $returnUrl	= '';
 	private $cancelUrl	= '';
 
-	function __construct($apiCredentials) {
+	function __construct($database, $apiCredentials) {
 
-		$this->apiCredentials = $apiCredentials;
+		if (!isset($database, $apiCredentials)) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Database or apiCredentials missing');
+			exit('Error: Database or apiCredentials missing');
+
+		}
+
+		# Save database
+		$this->database = $database;
+
+		# Verify credentials
+		if (!isset($apiCredentials['username'], $apiCredentials['password'], $apiCredentials['signature'], $apiCredentials['appID'])||
+			 $apiCredentials['username']===''||$apiCredentials['password']===''||$apiCredentials['signature']===''||$apiCredentials['appID']==='') {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Missing data in PayPal API credentials');
+			exit('Error: Missing data in PayPal API credentials');
+
+		}
 
 		$this->headers = array(
-			'X-PAYPAL-SECURITY-USERID: ' . $this->apiCredentials['username'],
-			'X-PAYPAL-SECURITY-PASSWORD: ' . $this->apiCredentials['password'],
-			'X-PAYPAL-SECURITY-SIGNATURE: ' . $this->apiCredentials['signature'],
-			'X-PAYPAL-APPLICATION-ID: ' . $this->apiCredentials['appID'],
+			'X-PAYPAL-SECURITY-USERID: ' . $apiCredentials['username'],
+			'X-PAYPAL-SECURITY-PASSWORD: ' . $apiCredentials['password'],
+			'X-PAYPAL-SECURITY-SIGNATURE: ' . $apiCredentials['signature'],
+			'X-PAYPAL-APPLICATION-ID: ' . $apiCredentials['appID'],
 			'X-PAYPAL-REQUEST-DATA-FORMAT: JSON',
 			'X-PAYPAL-RESPONSE-DATA-FORMAT: JSON'
 		);
@@ -51,6 +70,15 @@ class PayPal {
 
 	private function calculateAmount($type, $user) {
 
+		# Verify parameters
+		if (!isset($type, $user, $user['priceperalbum'], $user['percentperprice'])||
+			($type!=='album'&&$type!=='photo')||$user['priceperalbum']===''||$user['percentperprice']==='') {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Missing or corrupt parameters to calculate the amount for the payment');
+			return false;
+
+		}
+
 		if ($type==='album') {
 
 			$amount =  array(
@@ -67,18 +95,28 @@ class PayPal {
 
 		}
 
-		# TODO: check if everything is specified
+		# Verify amount
+		if (!isset($amount, $amount['primary'], $amount['secondary'])||
+			 $amount['primary']===''||$amount['secondary']==='') {
 
-		if (!isset($amount)) return false;
+			Log::error($this->database, __METHOD__, __LINE__, 'Could not calculate the amount for the payment');
+			return false;
+
+		}
+
 		return $amount;
 
 	}
 
 	private function createPayRequest($amount, $user) {
 
-		if (!isset($_SERVER['HTTP_REFERER'], $amount, $user)) exit('Error: Referer, amount or user missing');
+		if (!isset($_SERVER['HTTP_REFERER'], $amount, $user, $user['currencycode'], $user['primarymail'], $user['secondarymail'])||
+			 $amount['primary']===''||$amount['secondary']===''||$user['currencycode']===''||$user['primarymail']===''||$user['secondarymail']==='') {
 
-		# TODO: check if everything is specified (primarymail, secondarymail)
+			Log::error($this->database, __METHOD__, __LINE__, 'Referer, amount or user missing');
+			exit('Error: Referer, amount or user missing');
+
+		}
 
 		$returnUrl = $_SERVER['HTTP_REFERER'] . '/php/api.php?function=setPayment';
 		$cancelUrl = $_SERVER['HTTP_REFERER'];
@@ -109,25 +147,6 @@ class PayPal {
 
 	}
 
-	/*private function setPaymentOptions($payKey) {
-
-		$packet = array(
-			'payKey' => $payKey,
-			'receiverOptions' => array(
-				array(
-					'receiver' => array('email' => 'tobias.reich.ich-facilitator@gmail.com')
-				),
-				array(
-					'receiver' => array('email' => 'tobias.reich.ich-test@gmail.com')
-				)
-			),
-			'requestEnvelope' => $this->envelope
-		);
-
-		return $this->paypalSend($packet, 'SetPaymentOptions');
-
-	}*/
-
 	public function checkPayment($payKey) {
 
 		$packet = array(
@@ -145,7 +164,10 @@ class PayPal {
 
 	public function getLink($type, $user, $id) {
 
-		if (!isset($type, $user, $id)) exit('Error: Type, user or id missing');
+		if (!isset($type, $user, $id)) {
+			Log::error($this->database, __METHOD__, __LINE__, 'Type, user or id missing');
+			exit('Error: Type, user or id missing');
+		}
 
 		# Calculate amount
 		$amount = $this->calculateAmount($type, $user);
@@ -156,7 +178,10 @@ class PayPal {
 		$payKey		= @$response['payKey'];
 
 		# Check payKey
-		if (!isset($payKey)) exit('Error: No payKey found');
+		if (!isset($payKey)) {
+			Log::error($this->database, __METHOD__, __LINE__, 'No payKey found');
+			exit('Error: No payKey found');
+		}
 
 		# Save info
 		$_SESSION['payKey']		= $payKey;

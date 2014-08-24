@@ -14,7 +14,12 @@ class Database {
 
 		$database = new mysqli($dbCredentials['host'], $dbCredentials['user'], $dbCredentials['pass']);
 
-		if ($database->connect_errno) exit('Error: ' . $database->connect_error);
+		if ($database->connect_errno) {
+
+			Log::error($this->database, __METHOD__, __LINE__, $database->connect_error);
+			exit('Error: ' . $database->connect_error);
+
+		}
 
 		if (!$database->select_db($dbCredentials['name'])) exit('Error: Could not select database!');
 
@@ -30,18 +35,14 @@ class Database {
 
 	public function get() {
 
-		if (!isset($this->source)) return null;
-		else return $this->source;
+		if (!isset($this->source)) {
 
-	}
+			Log::notice($this->database, __METHOD__, __LINE__, 'Could not get and return database');
+			return null;
 
-	public function close() {
+		}
 
-		if (!isset($this->source)) return false;
-
-		$this->source->close();
-
-		return true;
+		return $this->source;
 
 	}
 

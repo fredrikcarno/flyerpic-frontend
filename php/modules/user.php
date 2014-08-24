@@ -20,7 +20,12 @@ class User {
 
 	public function get() {
 
-		if (!isset($this->database, $this->userID)) return null;
+		if (!isset($this->database, $this->userID)) {
+
+			Log::notice($this->database, __METHOD__, __LINE__, 'Database or userID missing');
+			return null;
+
+		}
 
 		$query	= "SELECT * FROM lychee_users WHERE id = '$this->userID' LIMIT 1;";
 		$result	= $this->database->query($query);

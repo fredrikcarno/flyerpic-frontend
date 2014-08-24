@@ -20,7 +20,12 @@ class Album {
 	public function get() {
 
 		# Check dependencies
-		if (!isset($this->database, $this->albumID)) exit('Error: Database or albumID missing');
+		if (!isset($this->database, $this->albumID)) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Database or albumID missing');
+			exit('Error: Database or albumID missing');
+
+		}
 
 		# Get album information
 		$albums = $this->database->query("SELECT * FROM lychee_albums WHERE id = '$this->albumID' LIMIT 1;");
@@ -101,21 +106,36 @@ class Album {
 
 	public function getID() {
 
-		if (!isset($this->albumID)) return false;
+		if (!isset($this->albumID)) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'albumID missing');
+			return false;
+
+		}
+
 		return $this->albumID;
 
 	}
 
 	public function getUserID() {
 
-		if (!isset($this->database, $this->albumID)) exit('Error: Database or albumID missing');
+		if (!isset($this->database, $this->albumID)) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Database or albumID missing');
+			exit('Error: Database or albumID missing');
+
+		}
 
 		$query	= "SELECT * FROM lychee_albums WHERE id = '$this->albumID' LIMIT 1;";
 		$result	= $this->database->query($query);
 		$return	= $result->fetch_assoc();
 
-		if (!isset($return['title'])) exit('Error: Album title not found');
-		else {
+		if (!isset($return['title'])) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Album title not found');
+			exit('Error: Album title not found');
+
+		} else {
 
 			$title = substr($return['title'], 0, 2);
 
@@ -132,7 +152,12 @@ class Album {
 
 	public function setPayment() {
 
-		if (!isset($this->database, $this->albumID)) exit('Error: Database or albumID missing');
+		if (!isset($this->database, $this->albumID)) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Database or albumID missing');
+			exit('Error: Database or albumID missing');
+
+		}
 
 		$error	= false;
 
@@ -145,14 +170,25 @@ class Album {
 			$photoObj	= new Photo($this->database, $photo->id);
 			$setResult	= $photoObj->setPayment();
 
-			if ($setResult!==true) $error = true;
+			if ($setResult!==true) {
+
+				Log::notice($this->database, __METHOD__, __LINE__, 'Could not mark photo as payed');
+				$error = true;
+
+			}
 
 		}
 
 		$query	= "UPDATE lychee_albums SET description = 'payed' WHERE id = '$this->albumID';";
 		$result	= $this->database->query($query);
 
-		if (!$result||$error===true) return false;
+		if (!$result||$error===true) {
+
+			Log::notice($this->database, __METHOD__, __LINE__, 'Could not mark all photos as payed');
+			return false;
+
+		}
+
 		return true;
 
 	}
