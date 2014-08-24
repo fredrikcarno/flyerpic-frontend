@@ -14,6 +14,12 @@ module.exports = (grunt) ->
 				dest: 'assets/js/',
 				ext: '.js'
 
+		uglify:
+
+			assets:
+				files:
+					'assets/min/main.js': 'assets/js/*.js'
+
 		sass:
 
 			assets:
@@ -25,22 +31,30 @@ module.exports = (grunt) ->
 					ext: '.css'
 				}]
 
+		cssmin:
+
+			assets:
+				files:
+					'assets/min/main.css': 'assets/css/*.css'
+
 		watch:
 
 			coffee:
 				files: 'assets/coffee/*.coffee'
-				tasks: ['coffee']
+				tasks: ['coffee', 'uglify', 'clean']
 				options:
 					spawn: false
 					interrupt: true
 
 			scss:
 				files: 'assets/scss/*.scss'
-				tasks: ['sass']
+				tasks: ['sass', 'cssmin', 'clean']
 				options:
 					spawn: false
 					interrupt: true
 
+		clean: ['assets/css', 'assets/js']
+
 	require('load-grunt-tasks')(grunt)
 
-	grunt.registerTask 'default', ['coffee', 'sass']
+	grunt.registerTask 'default', ['coffee', 'uglify', 'sass', 'cssmin', 'clean']

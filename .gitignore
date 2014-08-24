@@ -1,10 +1,6 @@
 etc/
 data/
-
-assets/js/
-assets/css/
-.sass-cache
-
+.sass-cache/
 node_modules/
 bower_components/
-vendor/
+assets/min
