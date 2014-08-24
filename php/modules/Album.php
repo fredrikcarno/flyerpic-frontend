@@ -28,10 +28,8 @@ class Album {
 		}
 
 		# Get album information
-		$albums = $this->database->query("SELECT * FROM lychee_albums WHERE id = '$this->albumID' LIMIT 1;");
+		$albums = $this->database->query("SELECT id, title, description FROM lychee_albums WHERE id = '$this->albumID' LIMIT 1;");
 		$return = $albums->fetch_assoc();
-		$return['sysdate']	= date('d M. Y', $return['sysstamp']);
-		$return['password']	= ($return['password']=='' ? false : true);
 		$return['userID']	= $this->getUserID();
 		$return['content']	= [];
 
@@ -65,9 +63,9 @@ class Album {
 			}
 
 			# Parse
-			$photo['sysdate']			= date('d F Y', substr($photo['id'], 0, -4));
 			$photo['previousPhoto']		= $previousPhotoID;
 			$photo['nextPhoto']			= '';
+			$photo['thumbUrl']			= 'uploads/thumb/' . $photo['thumbUrl'];
 
 			if ($previousPhotoID!=='') $return['content'][$previousPhotoID]['nextPhoto'] = $photo['id'];
 			$previousPhotoID = $photo['id'];
