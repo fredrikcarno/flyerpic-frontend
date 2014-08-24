@@ -93,6 +93,7 @@ this.content =
 					# Description:	The payment was not successful, because of a PayPal error or canceled payment.
 					#				The customer still needs to purchase the album/photo.
 					###
+					# TODO: Add modal
 					alert 'unverified'
 
 				when 'locked'
@@ -102,6 +103,7 @@ this.content =
 					# Description:	The payment was successful, but the album/photos could not be marked as paid.
 					#				The customer still sees the watermarked photos and should contact the support.
 					###
+					# TODO: Add modal
 					alert 'locked'
 
 				when 'success'
@@ -118,13 +120,10 @@ this.content =
 								"""
 						closable: true
 						buttons:
-							cancel:
-								title: 'Cancel'
-								fn: -> modal.close()
 							action:
 								title: 'Download your photos'
 								color: 'normal'
-								icon: 'arrow-down-a'
+								icon: 'ion-arrow-down-a'
 								fn: -> modal.close()
 
 				else
@@ -134,6 +133,7 @@ this.content =
 					# Description:	An unknown error happened.
 					#				A dialog will show up, prompting the customer to contact the support.
 					###
+					# TODO: Add modal
 					alert '-'
 
 	display:
