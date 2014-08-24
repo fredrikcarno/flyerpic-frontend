@@ -96,7 +96,11 @@ header {
 
 		@include vendorize(transition, background-color $duration);
 
-		& span.icon {
+		&.error {
+			background-color: #BD3737;
+		}
+
+		span.icon {
 			margin-right: 6px;
 		}
 
@@ -104,7 +108,15 @@ header {
 			background-color: darken($cMain, 5%);
 		}
 
+		&.error:hover {
+			background-color: darken(#BD3737, 5%);
+		}
+
 		&:active {
 			background-color: lighten($cMain, 5%);
+		}
+
+		&.error:active {
+			background-color: lighten(#BD3737, 5%);
 		}
 	}

@@ -65,4 +65,18 @@ this.button =
 	openLink: (data) ->
 
 		# TODO: Check if data is a link
-		window.location.href = data
+		expression	= /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
+		regex		= new RegExp(expression)
+
+		if data.match(regex)
+
+			# Open link
+			window.location.href = data
+
+		else
+
+			# Not a link
+			console.error 'Returned data is not a link'
+			$(button._name)
+				.addClass 'error'
+				.html 'Error...'
