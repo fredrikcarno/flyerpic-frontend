@@ -63,10 +63,6 @@ this.content =
 				# Add content
 				$('#content').html html
 
-				# Retina
-				$('img').each ->
-					new RetinaImage this
-
 				# Show album
 				content.display.album()
 
