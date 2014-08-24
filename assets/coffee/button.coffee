@@ -64,7 +64,6 @@ this.button =
 
 	openLink: (data) ->
 
-		# TODO: Check if data is a link
 		expression	= /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi
 		regex		= new RegExp(expression)
 
