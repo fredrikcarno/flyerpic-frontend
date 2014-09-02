@@ -1,5 +1,5 @@
 etc/
-data/
+data/config.php
 .sass-cache/
 node_modules/
 bower_components/
