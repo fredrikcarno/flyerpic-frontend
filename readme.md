@@ -16,7 +16,7 @@ After [installing Node.js](http://nodejs.org) you can use the following commands
 	
 ## Configuration
 
-You can find and edit the configuration in `data/config.php`.
+You can find and edit the configuration in `data/config.sample.php`. Duplicate and rename the copy to `config.php`.
 
 ## Data
 
