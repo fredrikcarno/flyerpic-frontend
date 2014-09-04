@@ -27,7 +27,9 @@ class User {
 
 		}
 
-		$query	= "SELECT * FROM lychee_users WHERE id = '$this->userID' LIMIT 1;";
+		$id = intval($this->userID);
+
+		$query	= "SELECT * FROM lychee_users WHERE id = '$id' LIMIT 1;";
 		$result	= $this->database->query($query);
 		$return	= $result->fetch_assoc();
 
