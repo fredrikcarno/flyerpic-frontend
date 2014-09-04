@@ -1,6 +1,6 @@
-# miniLychee
+# Flyerpic Frontend
 
-miniLychee works together with Lychee and allows to show and sell albums or photos.
+The Frontend works together with Lychee and allows to show and sell albums or photos.
 
 ## Installation
 
@@ -9,7 +9,7 @@ Make sure the following tools are installed on your system:
 - `node` [Node.js](http://nodejs.org) v0.10 or later
 - `npm` [Node Packaged Modules](https://www.npmjs.org)
 
-After [installing Node.js](http://nodejs.org) you can use the following commands to install the dependencies and build miniLychee:
+After [installing Node.js](http://nodejs.org) you can use the following commands to install the dependencies and build the Frontend:
 
 	npm install -g bower coffee-script grunt-cli
 	npm install
@@ -20,7 +20,7 @@ You can find and edit the configuration in `data/config.sample.php`. Duplicate a
 
 ## Data
 
-miniLychee uses Lychee to receive its data. In order to work seamlessly together, miniLychee requires various information to be stored in the data of albums and photos in Lychee.
+The Frontend uses Lychee to receive its data. In order to work seamlessly together, the Frontend requires various information to be stored in the data of albums and photos in Lychee.
 
 | Place | Description |
 |:-----------|:------------|

@@ -1,4 +1,4 @@
-this.miniLychee =
+this.frontend =
 
 	master: ''
 
@@ -40,7 +40,7 @@ this.miniLychee =
 
 	api: (external, params, callback) ->
 
-		root = if external is true then miniLychee.master else ''
+		root = if external is true then frontend.master else ''
 
 		$.ajax
 			type: 'POST'
@@ -58,7 +58,7 @@ this.miniLychee =
 
 				# Parse error
 				if typeof data is 'string' and data.substring(0, 6) is 'Error:'
-					miniLychee.error data.substring(7, data.length), params, data
+					frontend.error data.substring(7, data.length), params, data
 					return false
 
 				# Parse JSON
@@ -74,7 +74,7 @@ this.miniLychee =
 
 			error: (jqXHR, textStatus, errorThrown) ->
 
-				miniLychee.error 'Server error or API not found.', params, errorThrown
+				frontend.error 'Server error or API not found.', params, errorThrown
 				return false
 
 	error: (errorThrown, params, data) ->

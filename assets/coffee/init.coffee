@@ -10,7 +10,7 @@ $(document).ready ->
 		if e.keyCode is 27 then $('header a#close').click()
 
 	# Get location of Lychee
-	miniLychee.api false, 'getLychee', (data) ->
+	frontend.api false, 'getLychee', (data) ->
 
-		miniLychee.master = data
-		miniLychee.load document.location.hash
+		frontend.master = data
+		frontend.load document.location.hash

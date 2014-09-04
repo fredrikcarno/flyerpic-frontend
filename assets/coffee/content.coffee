@@ -9,13 +9,13 @@ this.content =
 
 		user: (userID) ->
 
-			miniLychee.api false, "getUser&userID=#{ userID }", (data) ->
+			frontend.api false, "getUser&userID=#{ userID }", (data) ->
 
 				# Save data
 				content.data.user = data
 
 				# Set about
-				$('header img#logo').attr 'src', "data/user/#{ userID }.png"
+				$('header img#logo').attr 'src', data.avatar
 				$('header #name').html data.name
 
 				###
@@ -49,7 +49,7 @@ this.content =
 
 		album: (albumID) ->
 
-			miniLychee.api false, "getAlbum&albumID=#{ albumID }&password=", (data) ->
+			frontend.api false, "getAlbum&albumID=#{ albumID }&password=", (data) ->
 
 				# Save data
 				content.data.album = data
@@ -71,7 +71,7 @@ this.content =
 
 		photo: (albumID, photoID) ->
 
-			miniLychee.api true, "getPhoto&photoID=#{ albumID }&albumID=#{ albumID }&password=", (data) ->
+			frontend.api true, "getPhoto&photoID=#{ albumID }&albumID=#{ albumID }&password=", (data) ->
 
 				# Save data
 				content.data.photo = data
@@ -200,11 +200,11 @@ this.content =
 		photo: (data) ->
 
 			"""
-			<img class="photo fadeIn" src="#{ miniLychee.master }#{ data.thumbUrl }" width="200" height="200" onClick="window.content.load.photo(#{ data.id })">
+			<img class="photo fadeIn" src="#{ frontend.master }#{ data.thumbUrl }" width="200" height="200" onClick="window.content.load.photo(#{ data.id })">
 			"""
 
 		image: (data) ->
 
 			"""
-			<div id="image" style="background-image: url('#{ miniLychee.master }#{ data.url }')"></div>
+			<div id="image" style="background-image: url('#{ frontend.master }#{ data.url }')"></div>
 			"""

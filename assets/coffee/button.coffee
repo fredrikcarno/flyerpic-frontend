@@ -50,12 +50,12 @@ this.button =
 			when 'album'
 
 				$(button._name).html 'Loading ...'
-				miniLychee.api false, "getPayPalLink&albumID=#{ id }", (data) -> button.openLink data
+				frontend.api false, "getPayPalLink&albumID=#{ id }", (data) -> button.openLink data
 
 			when 'photo'
 
 				$(button._name).html 'Loading ...'
-				miniLychee.api false, "getPayPalLink&photoID=#{ id }", (data) -> button.openLink data
+				frontend.api false, "getPayPalLink&photoID=#{ id }", (data) -> button.openLink data
 
 			when 'download'
 
