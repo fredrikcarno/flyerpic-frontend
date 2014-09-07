@@ -101,7 +101,7 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 									if ($payed===true&&$result===false) $status = 'locked';
 									if ($payed===true&&$result===true) $status = 'success';
 
-									header('Location: ' . $_SESSION['url'] . '#' . $_SESSION['payAlbumID'] . '/' . $_SESSION['payPhoto&nbsp;&nbsp;&nbsp;&nbsp;ID'] . '/' . $status);
+									header('Location: ' . $_SESSION['url'] . '#' . $_SESSION['payAlbumID'] . '/' . $_SESSION['payPhotoID'] . '/' . $status);
 									exit();
 
 								} else {

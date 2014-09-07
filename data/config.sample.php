@@ -10,7 +10,7 @@
 $configVersion = '0.0.1';
 
 // Lychee
-$lychee = '../lychee/'; // Path to the root of Lychee
+$lychee = 'http://lychee.example.com'; // Path to the root of Lychee
 
 // Database
 $dbCredentials = array(

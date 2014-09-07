@@ -93,8 +93,23 @@ this.content =
 					# Description:	The payment was not successful, because of a PayPal error or canceled payment.
 					#				The customer still needs to purchase the album/photo.
 					###
-					# TODO: Add modal
-					alert 'unverified'
+
+					modal.show
+						body:	"""
+								<p>Ups! Your purchase was not successful and we can not unlock your photos. Please contact the support with this message.</p>
+								"""
+						closable: true
+						buttons:
+							cancel:
+								title: 'Cancel'
+								fn: -> modal.close()
+							action:
+								title: 'Contact support'
+								color: 'normal'
+								icon: 'ion-help-circled'
+								fn: ->
+									window.location.href = "mailto:#{ content.data.user.helpmail }"
+									modal.close()
 
 				when 'locked'
 
@@ -103,8 +118,23 @@ this.content =
 					# Description:	The payment was successful, but the album/photos could not be marked as paid.
 					#				The customer still sees the watermarked photos and should contact the support.
 					###
-					# TODO: Add modal
-					alert 'locked'
+
+					modal.show
+						body:	"""
+								<p>Ups! Your purchase was successful, but we could not unlock your photos. Please contact the support with this message.</p>
+								"""
+						closable: true
+						buttons:
+							cancel:
+								title: 'Cancel'
+								fn: -> modal.close()
+							action:
+								title: 'Contact support'
+								color: 'normal'
+								icon: 'ion-help-circled'
+								fn: ->
+									window.location.href = "mailto:#{ content.data.user.helpmail }"
+									modal.close()
 
 				when 'success'
 
@@ -120,11 +150,16 @@ this.content =
 								"""
 						closable: true
 						buttons:
+							cancel:
+								title: 'Cancel'
+								fn: -> modal.close()
 							action:
 								title: 'Download your photos'
 								color: 'normal'
 								icon: 'ion-arrow-down-a'
-								fn: -> modal.close()
+								fn: ->
+									content.load.download albumID, photoID
+									modal.close()
 
 				else
 
@@ -133,8 +168,57 @@ this.content =
 					# Description:	An unknown error happened.
 					#				A dialog will show up, prompting the customer to contact the support.
 					###
-					# TODO: Add modal
-					alert '-'
+
+					modal.show
+						body:	"""
+								<p>Ups! Something went wrong and we do not know what it is. Please contact the support with this message.</p>
+								"""
+						closable: true
+						buttons:
+							cancel:
+								title: 'Cancel'
+								fn: -> modal.close()
+							action:
+								title: 'Contact support'
+								color: 'normal'
+								icon: 'ion-help-circled'
+								fn: ->
+									window.location.href = "mailto:#{ content.data.user.helpmail }"
+									modal.close()
+
+		download: (albumID, photoID) ->
+
+			if	(albumID? and albumID isnt '') and
+				(not photoID? or photoID is '')
+
+					# User purchased album
+					window.location.href = frontend.master + "php/api.php?function=getAlbumArchive&albumID=#{ albumID }&password="
+					return true
+
+			if	(albumID? and albumID isnt '') and
+				(photoID? and photoID isnt '')
+
+					# User purchased photo
+					window.location.href = frontend.master + "php/api.php?function=getPhotoArchive&photoID=#{ photoID }&password="
+					return true
+
+			# Missing params -> Show error
+			modal.show
+				body:	"""
+						<p>Ups! Something went wrong and we do not know what it is. Please contact the support with this message.</p>
+						"""
+				closable: true
+				buttons:
+					cancel:
+						title: 'Cancel'
+						fn: -> modal.close()
+					action:
+						title: 'Contact support'
+						color: 'normal'
+						icon: 'ion-help-circled'
+						fn: ->
+							window.location.href = "mailto:#{ content.data.user.helpmail }"
+							modal.close()
 
 	display:
 
