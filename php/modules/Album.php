@@ -191,6 +191,99 @@ class Album {
 
 	}
 
+	public function download() {
+
+		if (!isset($this->database, $this->albumID)) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Database or albumID missing');
+			exit('Error: Database or albumID missing');
+
+		}
+
+		# Photos query
+		$photos		= Database::prepare($this->database, "SELECT title, url, tags FROM ? WHERE album = '?'", array(LYCHEE_TABLE_PHOTOS, $this->albumID));
+		$zipTitle	= 'Photo Session';
+
+		$filename = LYCHEE_DATA . $zipTitle . '.zip';
+
+		# Create zip
+		$zip = new ZipArchive();
+		if ($zip->open($filename, ZIPARCHIVE::CREATE)!==TRUE) {
+			Log::error($this->database, __METHOD__, __LINE__, 'Could not create ZipArchive');
+			return false;
+		}
+
+		# Execute query
+		$photos = $this->database->query($photos);
+
+		# Check if album empty
+		if ($photos->num_rows==0) {
+			Log::error($this->database, __METHOD__, __LINE__, 'Could not create ZipArchive without images');
+			return false;
+		}
+
+		# Parse each path
+		$i = 1;
+		while ($photo = $photos->fetch_object()) {
+
+			# Check which version should be added to the ZIP and
+			# which should be skipped
+			if (strpos($photo->tags, 'watermarked')!==false) {
+
+				# Is a watermarked photo
+				# Check if user bought the photo. If so, don't show the watermarked-photo.
+				if (strpos($photo->tags, 'payed')!==false) {
+
+					# Photo bought
+					continue;
+
+				}
+
+			} else {
+
+				# Is *not* a watermarked photo
+				# Check if user bought the photo. If not, don't show the original-photo.
+				if (strpos($photo->tags, 'payed')===false) {
+
+					# Photo *not* bought
+					continue;
+
+				}
+
+			}
+
+			# Get extension
+			$extension = strpos($photo->url, '.') !== false
+				? strrchr($photo->url, '.')
+				: '';
+
+			# Set title for photo
+			$zipFileName = $zipTitle . '/' . $i . $extension;
+
+			# Add photo to zip
+			$zip->addFile(LYCHEE_UPLOADS_BIG . $photo->url, $zipFileName);
+
+			# Increase photo number
+			$i++;
+
+		}
+
+		# Finish zip
+		$zip->close();
+
+		# Send zip
+		header("Content-Type: application/zip");
+		header("Content-Disposition: attachment; filename=\"$zipTitle.zip\"");
+		header("Content-Length: " . filesize($filename));
+		readfile($filename);
+
+		# Delete zip
+		unlink($filename);
+
+		return true;
+
+	}
+
 }
 
 ?>

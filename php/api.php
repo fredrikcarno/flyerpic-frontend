@@ -11,10 +11,15 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 
 	session_start();
 
-	require(__DIR__ . '/autoload.php');
+	require('autoload.php');
 
 	if (file_exists(__DIR__ . '/../data/config.php')) require(__DIR__ . '/../data/config.php');
 	else exit('Error: Config not found!');
+
+	if (file_exists($lychee_path  . 'php/define.php')) require($lychee_path  . 'php/define.php');
+	else exit('Error: Define not found!');
+
+	defineTablePrefix('');
 
 	# Connect to database
 	$database = new Database($dbCredentials);
@@ -40,6 +45,14 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 
 									$album	= new Album($database->get(), $_POST['albumID']);
 									echo json_encode($album->get());
+
+								}
+								break;
+
+		case 'getAlbumArchive':	if (isset($_GET['albumID'])) {
+
+									$album	= new Album($database->get(), $_GET['albumID']);
+									$album->download();
 
 								}
 								break;

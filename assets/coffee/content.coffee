@@ -192,14 +192,14 @@ this.content =
 				(not photoID? or photoID is '')
 
 					# User purchased album
-					window.location.href = frontend.master + "php/api.php?function=getAlbumArchive&albumID=#{ albumID }&password="
+					window.location.href = "php/api.php?function=getAlbumArchive&albumID=#{ albumID }"
 					return true
 
 			if	(albumID? and albumID isnt '') and
 				(photoID? and photoID isnt '')
 
 					# User purchased photo
-					window.location.href = frontend.master + "php/api.php?function=getPhotoArchive&photoID=#{ photoID }&password="
+					window.location.href = "php/api.php?function=getPhotoArchive&photoID=#{ photoID }"
 					return true
 
 			# Missing params -> Show error
