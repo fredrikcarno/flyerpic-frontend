@@ -42,7 +42,7 @@ class Photo {
 
 		}
 
-		$query	= "SELECT * FROM lychee_photos WHERE id = '$this->photoID' LIMIT 1;";
+		$query	= Database::prepare($this->database, "SELECT * FROM ? WHERE id = '?' LIMIT 1", array(LYCHEE_TABLE_PHOTOS, $this->photoID));
 		$result	= $this->database->query($query);
 		$return	= $result->fetch_assoc();
 
@@ -64,7 +64,7 @@ class Photo {
 		}
 
 		# Get photos which belong together
-		$query	= "SELECT tags FROM lychee_photos WHERE id = '$this->photoID';";
+		$query	= Database::prepare($this->database, "SELECT tags FROM ? WHERE id = '?'", array(LYCHEE_TABLE_PHOTOS, $this->photoID));
 		$result	= $this->database->query($query);
 		$result	= $result->fetch_assoc();
 		$tags	= @split(',', $result['tags']);
@@ -77,7 +77,7 @@ class Photo {
 
 		}
 
-		$query	= "UPDATE lychee_photos SET tags = CONCAT(tags, ',payed') WHERE tags LIKE '$tag%' LIMIT 2;";
+		$query	= Database::prepare($this->database, "UPDATE ? SET tags = CONCAT(tags, ',payed') WHERE tags LIKE '?%' LIMIT 2", array(LYCHEE_TABLE_PHOTOS, $tag));
 		$result	= $this->database->query($query);
 
 		if (!$result) return false;
@@ -96,7 +96,7 @@ class Photo {
 		}
 
 		# Get photos which belong together
-		$query	= "SELECT tags FROM lychee_photos WHERE id = '$this->photoID';";
+		$query	= Database::prepare($this->database, "SELECT tags FROM ? WHERE id = '?'", array(LYCHEE_TABLE_PHOTOS, $this->photoID));
 		$result	= $this->database->query($query);
 		$result	= $result->fetch_assoc();
 		$tags	= @split(',', $result['tags']);

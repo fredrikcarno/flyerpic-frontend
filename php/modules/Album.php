@@ -28,13 +28,15 @@ class Album {
 		}
 
 		# Get album information
-		$albums = $this->database->query("SELECT id, title, description FROM lychee_albums WHERE id = '$this->albumID' LIMIT 1;");
+		$query	= Database::prepare($this->database, "SELECT id, title, description FROM ? WHERE id = '?' LIMIT 1", array(LYCHEE_TABLE_ALBUMS, $this->albumID));
+		$albums = $this->database->query($query);
 		$return = $albums->fetch_assoc();
 		$return['userID']	= $this->getUserID();
 		$return['content']	= [];
 
 		# Get photos
-		$photos				= $this->database->query("SELECT id, title, tags, public, star, album, thumbUrl FROM lychee_photos WHERE album = '$this->albumID'");
+		$query				= Database::prepare($this->database, "SELECT id, title, tags, public, star, album, thumbUrl FROM ? WHERE album = '?'", array(LYCHEE_TABLE_PHOTOS, $this->albumID));
+		$photos				= $this->database->query($query);
 		$previousPhotoID	= '';
 		while ($photo = $photos->fetch_assoc()) {
 
@@ -126,7 +128,7 @@ class Album {
 
 		}
 
-		$query	= "SELECT * FROM lychee_albums WHERE id = '$this->albumID' LIMIT 1;";
+		$query	= Database::prepare($this->database, "SELECT * FROM ? WHERE id = '?' LIMIT 1", array(LYCHEE_TABLE_ALBUMS, $this->albumID));
 		$result	= $this->database->query($query);
 		$return	= $result->fetch_assoc();
 
@@ -162,7 +164,8 @@ class Album {
 
 		$error	= false;
 
-		$query	= "SELECT id, tags FROM lychee_photos WHERE album = '$this->albumID';";
+		# Set photos of album to payed
+		$query	= Database::prepare($this->database, "SELECT id, tags FROM ? WHERE album = '?'", array(LYCHEE_TABLE_PHOTOS, $this->albumID));
 		$result	= $this->database->query($query);
 
 		# For each photo
@@ -180,7 +183,8 @@ class Album {
 
 		}
 
-		$query	= "UPDATE lychee_albums SET description = 'payed' WHERE id = '$this->albumID';";
+		# Set album to payed
+		$query	= Database::prepare($this->database, "UPDATE ? SET description = 'payed' WHERE id = '?'", array(LYCHEE_TABLE_ALBUMS, $this->albumID));
 		$result	= $this->database->query($query);
 
 		if (!$result||$error===true) {
@@ -206,8 +210,10 @@ class Album {
 
 		# Photos query
 		$photos		= Database::prepare($this->database, "SELECT title, url, tags FROM ? WHERE album = '?'", array(LYCHEE_TABLE_PHOTOS, $this->albumID));
-		$zipTitle	= 'Photo Session';
+		$photos		= $this->database->query($photos);
 
+		# Set title
+		$zipTitle	= 'Photo Session';
 		$filename = LYCHEE_DATA . $zipTitle . '.zip';
 
 		# Create zip
@@ -216,9 +222,6 @@ class Album {
 			Log::error($this->database, __METHOD__, __LINE__, 'Could not create ZipArchive');
 			return false;
 		}
-
-		# Execute query
-		$photos = $this->database->query($photos);
 
 		# Check if album empty
 		if ($photos->num_rows==0) {
