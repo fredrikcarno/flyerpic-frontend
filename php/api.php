@@ -19,7 +19,7 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 	if (file_exists($lychee_path  . 'php/define.php')) require($lychee_path  . 'php/define.php');
 	else exit('Error: Define not found!');
 
-	defineTablePrefix('');
+	defineTablePrefix($dbCredentials['prefix']);
 
 	# Connect to database
 	$database = new Database($dbCredentials);
@@ -53,6 +53,14 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 
 									$album	= new Album($database->get(), $_GET['albumID']);
 									$album->download();
+
+								}
+								break;
+
+		case 'getPhotoArchive':	if (isset($_GET['photoID'])) {
+
+									$photo	= new Photo($database->get(), $_GET['photoID']);
+									$photo->download();
 
 								}
 								break;
