@@ -9,6 +9,8 @@ this.button =
 
 	set: (type, price, currencySymbol, currencyPosition) ->
 
+		$(button._name).removeClass 'error'
+
 		if currencyPosition is '0'
 			preCurrencySymbol	= currencySymbol
 			afterCurrencySymbol	= ''
@@ -36,31 +38,37 @@ this.button =
 		# Set click
 		$(button._name).off 'click'
 		switch type
-			when 'album' then $(button._name).on 'click', -> button.getLink('album', content.data.album.id)
-			when 'photo' then $(button._name).on 'click', -> button.getLink('photo', content.data.photo.id)
-			when 'download' then $(button._name).on 'click', -> button.getLink('download', content.data.album.id)
+			when 'album' then $(button._name).on 'click', -> button.getLink('album', content.data.album, null)
+			when 'photo' then $(button._name).on 'click', -> button.getLink('photo', null, content.data.photo)
+			when 'download' then $(button._name).on 'click', -> button.getLink('download', content.data.album, content.data.photo)
 
 		# Show button
 		$(button._name).show()
 
-	getLink: (type, id) ->
+	getLink: (type, album, photo) ->
 
 		switch type
 
 			when 'album'
 
 				$(button._name).html 'Loading ...'
-				frontend.api false, "getPayPalLink&albumID=#{ id }", (data) -> button.openLink data
+				frontend.api false, "getPayPalLink&albumID=#{ album.id }", (data) -> button.openLink data
 
 			when 'photo'
 
 				$(button._name).html 'Loading ...'
-				frontend.api false, "getPayPalLink&photoID=#{ id }", (data) -> button.openLink data
+				frontend.api false, "getPayPalLink&photoID=#{ photo.id }", (data) -> button.openLink data
 
 			when 'download'
 
-				link = 'http://google.de'
-				button.openLink link
+				if album?.id? and photo?.id? then window.location.href = "php/api.php?function=getPhotoArchive&photoID=#{ photo.id }" # Download photo
+				else if album?.id? then window.location.href = "php/api.php?function=getAlbumArchive&albumID=#{ album.id }" # Download album
+				else
+
+					# Missing albumID and photoID
+					$(button._name)
+						.addClass 'error'
+						.html 'Error...'
 
 	openLink: (data) ->
 
@@ -75,7 +83,7 @@ this.button =
 		else
 
 			# Not a link
-			console.error 'Returned data is not a link'
+			console.error "Returned data is not a link: #{ data }"
 			$(button._name)
 				.addClass 'error'
 				.html 'Error...'
