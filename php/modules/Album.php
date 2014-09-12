@@ -104,6 +104,7 @@ class Album {
 
 	public function getID() {
 
+		# Check dependencies
 		if (!isset($this->albumID)) {
 
 			Log::error($this->database, __METHOD__, __LINE__, 'albumID missing');
@@ -117,6 +118,7 @@ class Album {
 
 	public function getUserID() {
 
+		# Check dependencies
 		if (!isset($this->database, $this->albumID)) {
 
 			Log::error($this->database, __METHOD__, __LINE__, 'Database or albumID missing');
@@ -150,6 +152,7 @@ class Album {
 
 	public function setPayment() {
 
+		# Check dependencies
 		if (!isset($this->database, $this->albumID)) {
 
 			Log::error($this->database, __METHOD__, __LINE__, 'Database or albumID missing');
@@ -193,6 +196,7 @@ class Album {
 
 	public function download() {
 
+		# Check dependencies
 		if (!isset($this->database, $this->albumID)) {
 
 			Log::error($this->database, __METHOD__, __LINE__, 'Database or albumID missing');
