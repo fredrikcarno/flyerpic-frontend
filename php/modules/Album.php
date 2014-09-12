@@ -214,7 +214,7 @@ class Album {
 
 		# Set title
 		$zipTitle	= 'Photo Session';
-		$filename = LYCHEE_DATA . $zipTitle . '.zip';
+		$filename = LYCHEE_DATA . md5(microtime(true)) . '.zip';
 
 		# Create zip
 		$zip = new ZipArchive();
