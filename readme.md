@@ -26,7 +26,7 @@ The Frontend uses Lychee to receive its data. In order to work seamlessly togeth
 |:-----------|:------------|
 | Album Title | The album title must start with the shorthand of the ID from the photographer which owns the album. The photographer with the ID `01` has the shorthand ID `ab`. The shorthand ID is documented in the documentation of the Backend. The shorthand must be 2 chars long. |
 | Album Sharing | The album must be public, downloadable and not visible. |
-| Photo Tags | 1) The watermarked photo must contain a `watermarked`-Tag. 2) A bought photo (including the watermarked-version) must contain `payed`-Tag. 3) Photos which belong together (normal and watermarked) must have one tag in common to identify the togetherness. |
+| Photo Tags | 1) Photos which belong together (normal and watermarked) must have one tag in common to identify the togetherness. This must be the first tag.<br> 2) The watermarked photo must contain a `watermarked`-Tag.<br> 3) A bought photo (including the watermarked-version) must contain `payed`-Tag. |
 
 ## URL
 
