@@ -14,14 +14,3 @@ body {
 	@include vendorize(font-smoothing, antialiased);
 	@include vendorize(user-select, none);
 }
-
-.center {
-	left: 50%;
-	top: 50%;
-	position: absolute;
-}
-
-/* Include ------------------------------------------------- */
-@import 'header';
-@import 'content';
-@import 'view';

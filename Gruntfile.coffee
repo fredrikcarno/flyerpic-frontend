@@ -18,24 +18,31 @@ module.exports = (grunt) ->
 
 			assets:
 				files:
-					'assets/min/main.js': 'assets/js/*.js'
+					'assets/min/main.js': 'assets/js/!(redirect).js'
+
+			redirect:
+				files:
+					'assets/min/redirect.js': 'assets/js/redirect.js'
 
 		sass:
 
 			assets:
-				files: [{
-					expand: true
-					cwd: 'assets/scss/'
-					src: ['*.scss']
-					dest: 'assets/css/'
-					ext: '.css'
-				}]
+				files:
+					'assets/css/main.css': 'assets/scss/main.scss'
+
+			redirect:
+				files:
+					'assets/css/redirect.css': 'assets/scss/redirect.scss'
 
 		cssmin:
 
 			assets:
 				files:
-					'assets/min/main.css': 'assets/css/*.css'
+					'assets/min/main.css': 'assets/css/main.css'
+
+			redirect:
+				files:
+					'assets/min/redirect.css': 'assets/css/redirect.css'
 
 		watch:
 
