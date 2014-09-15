@@ -56,6 +56,7 @@ this.content =
 
 					# Redirect to redirect.html where the user can enter his mail
 					window.location.href = "redirect.html#mail/#{ albumID }"
+					return false
 
 				# Save data
 				content.data.album = data

@@ -22,22 +22,27 @@ this.frontend =
 			# Show modal
 			content.load.payment albumID, photoID, status
 
+			return true
+
 		else if albumID? and photoID? and photoID not ''
 
 			# Load
 			content.load.album albumID
 			content.load.photo albumID, photoID
+			return true
 
 		else if albumID?
 
 			# Load album
 			content.load.album albumID
+			return true
 
 		else
 
 			# AlbumID missing
 			# Redirect to redirect.html where the user can enter his code
 			window.location.href = 'redirect.html'
+			return false
 
 	api: (external, params, callback) ->
 
