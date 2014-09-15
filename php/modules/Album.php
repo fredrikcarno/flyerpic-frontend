@@ -38,6 +38,16 @@ class Album {
 		$query				= Database::prepare($this->database, "SELECT id, title, tags, public, star, album, thumbUrl FROM ? WHERE album = '?'", array(LYCHEE_TABLE_PHOTOS, $this->albumID));
 		$photos				= $this->database->query($query);
 		$previousPhotoID	= '';
+
+		# Catch empty albums
+		# Valid album must at least contain two photos, otherwise it's empty and not available
+		if ($photos->num_rows<2) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Customer tried to take a look at an empty album (' . $this->albumID . ')');
+			exit('Warning: Album empty');
+
+		}
+
 		while ($photo = $photos->fetch_assoc()) {
 
 			if (strpos($photo['tags'], 'watermarked')!==false) {
@@ -122,6 +132,19 @@ class Album {
 
 		# Check if albumID valid
 		if (!isset($id)||$id==='') return false;
+
+		# Catch empty albums
+		# Valid album must at least contain two photos, otherwise it's empty and not available
+		$query	= Database::prepare($this->database, "SELECT id FROM ? WHERE album = '?'", array(LYCHEE_TABLE_PHOTOS, $id));
+		$photos	= $this->database->query($query);
+
+		if ($photos->num_rows<2) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Customer tried to take a look at an empty album (' . $this->albumID . ')');
+			exit('Warning: Album empty');
+
+		}
+
 		return $id;
 
 	}
