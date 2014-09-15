@@ -20,6 +20,7 @@ class User {
 
 	public function get() {
 
+		# Check dependencies
 		if (!isset($this->database, $this->userID)) {
 
 			Log::notice($this->database, __METHOD__, __LINE__, 'Database or userID missing');
@@ -29,11 +30,34 @@ class User {
 
 		$id = intval($this->userID);
 
-		$query	= "SELECT * FROM lychee_users WHERE id = '$id' LIMIT 1;";
+		$query	= Database::prepare($this->database, "SELECT * FROM lychee_users WHERE id = '?' LIMIT 1", array($id));
 		$result	= $this->database->query($query);
 		$return	= $result->fetch_assoc();
 
 		return $return;
+
+	}
+
+	public function setMail($mail, $code) {
+
+		# Check dependencies
+		if (!isset($this->database)) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Database missing');
+			exit('Error: Database missing');
+
+		}
+
+		$query	= Database::prepare($this->database, "INSERT INTO lychee_mails (mail, code) VALUES ('?', '?')", array($mail, $code));
+		$result	= $this->database->query($query);
+
+		if (!$result) {
+
+			Log::notice($this->database, __METHOD__, __LINE__, $this->database->error);
+			return false;
+
+		}
+		return true;
 
 	}
 

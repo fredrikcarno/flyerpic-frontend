@@ -140,8 +140,16 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 
 		case 'getCode':		if (isset($_POST['code'])) {
 
-								$album	= new Album($database->get(), null);
+								$album = new Album($database->get(), null);
 								echo $album->getByCode($_POST['code']);
+
+							}
+							break;
+
+		case 'setMail':		if (isset($_POST['mail'], $_POST['code'])) {
+
+								$user = new User($database->get(), null);
+								echo $user->setMail($_POST['mail'], $_POST['code']);
 
 							}
 							break;

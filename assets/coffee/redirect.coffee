@@ -127,15 +127,43 @@ this.frontend =
 
 		set: (data) ->
 
-			if	not data?.mail? or
-				data.mail is ''
+			mail = data.mail
+
+			if	not mail? or
+				mail is ''
 
 					# Invalid mail
 					modal.error 'mail'
 					return false
 
 			# Store mail in database
-			# TODO
+			frontend.api 'setMail&mail=' + encodeURI(mail) + '&code='+ encodeURI(frontend.data.code), (data) ->
+
+				if	not data? or
+					data is false
+
+						# Invalid mail
+						modal.error 'mail'
+						return false
+
+				# Show dialog that the customer will be notified
+				frontend.mail.confirm mail
+
+		confirm: (mail) ->
+
+			mail = mail.replace "'", "&apos;"
+
+			modal.show
+				body:	"""
+						<p>Perfect! We will send a mail to '#{ mail }' when your photos are ready.</p>
+						"""
+				closable: false
+				buttons:
+					action:
+						title: 'Enter a new code'
+						color: 'normal'
+						icon: ''
+						fn: -> window.location.href = 'redirect.html'
 
 	error: (errorThrown, params, data) ->
 
