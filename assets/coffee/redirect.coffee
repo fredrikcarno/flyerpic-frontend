@@ -23,7 +23,6 @@ this.frontend =
 				# Parse error
 				if typeof data is 'string' and data.substring(0, 6) is 'Error:'
 					frontend.error data.substring(7, data.length), params, data
-					return false
 
 				# Parse JSON
 				if	typeof data is 'string' and
@@ -87,22 +86,32 @@ this.frontend =
 
 		check: (data) ->
 
-			if	not data?.code? or
-				data.code is ''
+			code = data.code
 
-					# Invalid mail
+			if	not code? or
+				code is ''
+
+					# Invalid code
 					modal.error 'code'
 					return false
 
 			# Lookup code from database
-			frontend.api 'getCode&code=' + encodeURI(data.code), (data) ->
+			frontend.api 'getCode&code=' + encodeURI(code), (data) ->
 
 				if	not data? or
 					data is false
 
-						# Invalid mail
+						# Invalid code
 						modal.error 'code'
 						return false
+
+				if data is 'Warning: Album empty'
+
+					# Code not found
+					# Enter mail and get notified when the session is uploaded
+					frontend.data.code = code
+					frontend.mail.enter()
+					return false
 
 				window.location.href = "index.html##{ data }"
 
@@ -113,7 +122,7 @@ this.frontend =
 			modal.show
 				body:	"""
 						<h1>Flyerpic</h1>
-						<p>Your photos are not available, yet. The photographer may need some more time to process them. You can enter your e-mail below and we will notify you when your photos are ready!</p>
+						<p>Your photos are not available, yet. The photographer may need some more time to process them. You can enter your e-mail below and we will notify you when your photos are ready! <a href="#">Need help?</a></p>
 						<input class="text" type="text" placeholder="Your E-Mail" data-name="mail">
 						"""
 				closable: false
@@ -155,7 +164,7 @@ this.frontend =
 
 			modal.show
 				body:	"""
-						<p>Perfect! We will send a mail to '#{ mail }' when your photos are ready.</p>
+						<p>Perfect! We will send a mail to '#{ mail }' when your photos are ready. <a href="#">Need help?</a></p>
 						"""
 				closable: false
 				buttons:
