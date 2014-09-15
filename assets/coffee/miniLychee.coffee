@@ -6,7 +6,7 @@ this.frontend =
 
 		hash = url.replace('#', '').split('/')
 
-		if hash[0]? then albumID = hash[0]
+		if hash[0]? and hash[0] isnt '' then albumID = hash[0]
 		if hash[1]? then photoID = hash[1]
 		if hash[2]? then status = hash[2]
 
@@ -22,7 +22,7 @@ this.frontend =
 			# Show modal
 			content.load.payment albumID, photoID, status
 
-		if albumID? and photoID? and photoID not ''
+		else if albumID? and photoID? and photoID not ''
 
 			# Load
 			content.load.album albumID
@@ -35,8 +35,9 @@ this.frontend =
 
 		else
 
-			# Show error
-			alert 'NO CODE'
+			# AlbumID missing
+			# Redirect to redirect.html where the user can enter his code
+			window.location.href = 'redirect.html'
 
 	api: (external, params, callback) ->
 
@@ -59,7 +60,6 @@ this.frontend =
 				# Parse error
 				if typeof data is 'string' and data.substring(0, 6) is 'Error:'
 					frontend.error data.substring(7, data.length), params, data
-					return false
 
 				# Parse JSON
 				if	typeof data is 'string' and

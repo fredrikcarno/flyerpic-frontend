@@ -51,6 +51,12 @@ this.content =
 
 			frontend.api false, "getAlbum&albumID=#{ albumID }&password=", (data) ->
 
+				# Catch unknown albumID error
+				if data is 'Error: Album title not found'
+
+					# Redirect to redirect.html where the user can enter his mail
+					window.location.href = "redirect.html#mail/#{ albumID }"
+
 				# Save data
 				content.data.album = data
 
