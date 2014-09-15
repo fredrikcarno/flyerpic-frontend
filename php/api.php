@@ -138,6 +138,14 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 							}
 							break;
 
+		case 'getCode':		if (isset($_POST['code'])) {
+
+								$album	= new Album($database->get(), null);
+								echo $album->getByCode($_POST['code']);
+
+							}
+							break;
+
 	}
 
 } else {

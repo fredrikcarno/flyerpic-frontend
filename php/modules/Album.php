@@ -104,6 +104,28 @@ class Album {
 
 	}
 
+	public function getByCode($code) {
+
+		# Check dependencies
+		if (!isset($this->database)) {
+
+			Log::error($this->database, __METHOD__, __LINE__, 'Database missing');
+			exit('Error: Database missing');
+
+		}
+
+		# Search code
+		$query	= Database::prepare($this->database, "SELECT id FROM ? WHERE title = '?' LIMIT 1", array(LYCHEE_TABLE_ALBUMS, $code));
+		$result = $this->database->query($query);
+		$return = $result->fetch_array();
+		$id		= $return['id'];
+
+		# Check if albumID valid
+		if (!isset($id)||$id==='') return false;
+		return $id;
+
+	}
+
 	public function getID() {
 
 		# Check dependencies
