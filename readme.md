@@ -6,6 +6,7 @@ The Frontend works together with Lychee and allows to show and sell albums or ph
 
 Make sure the following tools are installed on your system:
 
+- `php` v5.4 or later with `curl` activated
 - `node` [Node.js](http://nodejs.org) v0.10 or later
 - `npm` [Node Packaged Modules](https://www.npmjs.org)
 
