@@ -118,8 +118,9 @@ class PayPal {
 
 		}
 
-		$returnUrl = $_SERVER['HTTP_REFERER'] . '/php/api.php?function=setPayment';
-		$cancelUrl = $_SERVER['HTTP_REFERER'];
+		$httpReferer	= str_replace('index.html', '', $_SERVER['HTTP_REFERER']);
+		$returnUrl		= $_SERVER['HTTP_REFERER'] . '/php/api.php?function=setPayment';
+		$cancelUrl		= $_SERVER['HTTP_REFERER'];
 
 		$packet = array(
 			'actionType' => 'PAY',
