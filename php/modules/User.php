@@ -34,6 +34,9 @@ class User {
 		$result	= $this->database->query($query);
 		$return	= $result->fetch_assoc();
 
+		# Remove password from return
+		$return['password'] = null;
+
 		return $return;
 
 	}
