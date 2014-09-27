@@ -22,30 +22,31 @@ this.content =
 				# Set button
 				###
 
-				if	content.data.album?.description? and
-					content.data.album.description.indexOf('payed') isnt -1
+				if content.data.album?.description?
+
+					if content.data.album.description.indexOf('payed') isnt -1
 
 						# Show download button
 						button.set 'download'
 						return true
 
-				else if content.data.album.description.indexOf('payed') is -1
+					else
 
-					# Show buy button for album
-					button.set 'album', data.priceperalbum, data.currencysymbol, data.currencyposition
+						# Show buy button for album
+						button.set 'album', data.priceperalbum, data.currencysymbol, data.currencyposition
 
-				if	content.data.photo?.tags? and
-					content.data.photo.tags.indexOf('payed') isnt -1
+				if content.data.photo?.tags?
+
+					if content.data.photo.tags.indexOf('payed') isnt -1
 
 						# Show download button
 						button.set 'download'
 						return true
 
-				else if content.data.photo.tags.indexOf('payed') is -1
+					else
 
-					# Show buy button for album
-					button.set 'photo', data.priceperphoto, data.currencysymbol, data.currencyposition
-
+						# Show buy button for album
+						button.set 'photo', data.priceperphoto, data.currencysymbol, data.currencyposition
 
 		album: (albumID) ->
 
