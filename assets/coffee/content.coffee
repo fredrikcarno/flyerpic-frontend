@@ -14,9 +14,11 @@ this.content =
 				# Save data
 				content.data.user = data
 
-				# Set about
+				# Set header info
 				$('header img#logo').attr 'src', data.avatar
 				$('header #name').html data.name
+				$('header #button_contact').attr 'href', "mailto:#{ data.primarymail }"
+				$('header #button_support').attr 'href', "mailto:#{ data.helpmail }"
 
 				###
 				# Set button

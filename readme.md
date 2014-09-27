@@ -19,6 +19,8 @@ After [installing Node.js](http://nodejs.org) you can use the following commands
 
 You can find and edit the configuration in `data/config.sample.php`. Duplicate and rename the copy to `config.php`.
 
+The `redirect.html` dialogs are always including a link to contact the store-holder. You can edit the mail in `assets/coffee/redirect.coffee`.
+
 ## Data
 
 The Frontend uses Lychee to receive its data. In order to work seamlessly together, the Frontend requires various information to be stored in the data of albums and photos in Lychee.
