@@ -74,7 +74,7 @@ this.frontend =
 				body:	"""
 						<h1>Enter Code</h1>
 						<p>Please enter the code from your flyer into the box below. <a href="mailto:#{ frontend.data.helpmail }">Need help?</a></p>
-						<input class="text" type="text" placeholder="Your Code" data-name="code">
+						<input class="text" type="text" placeholder="Your Code" data-name="code" autocapitalize="off" autocorrect="off">
 						"""
 				closable: false
 				class: 'login'
@@ -124,7 +124,7 @@ this.frontend =
 				body:	"""
 						<h1>Flyerpic</h1>
 						<p>Your photos are not available, yet. The photographer may need some more time to process them. You can enter your e-mail below and we will notify you when your photos are ready! <a href="mailto:#{ frontend.data.helpmail }">Need help?</a></p>
-						<input class="text" type="text" placeholder="Your E-Mail" data-name="mail">
+						<input class="text" type="email" placeholder="Your E-Mail" data-name="mail">
 						"""
 				closable: false
 				class: 'login'
