@@ -39,7 +39,7 @@ this.button =
 		$(button._name).off 'click'
 		switch type
 			when 'album' then $(button._name).on 'click', -> button.getLink('album', content.data.album, null)
-			when 'photo' then $(button._name).on 'click', -> button.getLink('photo', null, content.data.photo)
+			when 'photo' then $(button._name).on 'click', -> button.getLink('photo', content.data.album, content.data.photo)
 			when 'download' then $(button._name).on 'click', -> button.getLink('download', content.data.album, content.data.photo)
 
 		# Show button
@@ -57,7 +57,7 @@ this.button =
 			when 'photo'
 
 				$(button._name).html 'Loading ...'
-				frontend.api false, "getPayPalLink&photoID=#{ photo.id }", (data) -> button.openLink data
+				frontend.api false, "getPayPalLink&albumID=#{ album.id }&photoID=#{ photo.id }", (data) -> button.openLink data
 
 			when 'download'
 

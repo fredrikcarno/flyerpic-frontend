@@ -163,9 +163,9 @@ class PayPal {
 
 	}
 
-	public function getLink($type, $user, $id) {
+	public function getLink($type, $user, $albumID, $photoID = '') {
 
-		if (!isset($type, $user, $id)) {
+		if (!isset($type, $user, $albumID)) {
 			Log::error($this->database, __METHOD__, __LINE__, 'Type, user or id missing');
 			exit('Error: Type, user or id missing');
 		}
@@ -188,8 +188,8 @@ class PayPal {
 		$_SESSION['payKey']		= $payKey;
 		$_SESSION['payUrl']		= $this->paypalUrl . $payKey;
 		$_SESSION['payType']	= $type;
-		if ($type==='album') $_SESSION['payAlbumID'] = $id;
-		if ($type==='photo') $_SESSION['payPhotoID'] = $id;
+		$_SESSION['payAlbumID']	= $albumID;
+		if ($type==='photo') $_SESSION['payPhotoID'] = $photoID;
 
 		# Return payKey
 		return $_SESSION['payUrl'];

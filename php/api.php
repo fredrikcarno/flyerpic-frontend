@@ -67,19 +67,22 @@ if ((isset($_POST['function'])&&!empty($_POST['function']))||
 
 		case 'getPayPalLink':	$_SESSION['url'] = $_SERVER['HTTP_REFERER'];
 
-								if (isset($_POST['albumID'])) {
+								if (isset($_POST['albumID'])&&!isset($_POST['photoID'])) {
 
+									# Generate album buy link
 									$album	= new Album($database->get(), $_POST['albumID']);
 									$user	= new User($database->get(), $album->getUserID());
 									$paypal	= new PayPal($database->get(), $apiCredentials);
 									echo $paypal->getLink('album', $user->get(), $album->getID());
 
-								} else if (isset($_POST['photoID'])) {
+								} else if (isset($_POST['albumID'], $_POST['photoID'])) {
 
+									# Generate photo buy link
+									$album	= new Album($database->get(), $_POST['albumID']);
 									$photo	= new Photo($database->get(), $_POST['photoID']);
 									$user	= new User($database->get(), $photo->getUserID());
 									$paypal	= new PayPal($database->get(), $apiCredentials);
-									echo $paypal->getLink('photo', $user->get(), $photo->getID());
+									echo $paypal->getLink('photo', $user->get(), $album->getID(), $photo->getID());
 
 								} else {
 
