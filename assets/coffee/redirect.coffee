@@ -49,7 +49,7 @@ this.frontend =
 		if hash[1]? then code = hash[1]
 
 		if	type? and
-			hash? and
+			code? and
 			type is 'mail'
 
 				# Save to data
@@ -59,6 +59,17 @@ this.frontend =
 				# Show that session is not yet available
 				frontend.mail.enter()
 				return true
+
+		else if	type? and
+				code? and
+				type is 'redirect'
+
+					# Save to data
+					frontend.data.type = type
+					frontend.data.code = code
+
+					# Redirect to store
+					frontend.redirect code
 
 		else
 
@@ -116,6 +127,29 @@ this.frontend =
 
 				window.location.href = "index.html##{ data }"
 
+	redirect: (code) ->
+
+		# Lookup code from database
+		frontend.api 'getCode&code=' + encodeURI(code), (data) ->
+
+			if	not data? or
+				data is false
+
+					# Show modal
+					# Show that session is not yet available
+					frontend.mail.enter()
+					return true
+
+			if data is 'Warning: Album empty'
+
+				# Code not found
+				# Enter mail and get notified when the session is uploaded
+				frontend.data.code = code
+				frontend.mail.enter()
+				return false
+
+			window.location.href = "index.html##{ data }"
+
 	mail:
 
 		enter: ->
@@ -131,8 +165,6 @@ this.frontend =
 				buttons:
 					action:
 						title: 'Notify me'
-						color: 'normal'
-						icon: ''
 						fn: frontend.mail.set
 
 		set: (data) ->
@@ -171,8 +203,6 @@ this.frontend =
 				buttons:
 					action:
 						title: 'Enter a new code'
-						color: 'normal'
-						icon: ''
 						fn: -> window.location.href = 'redirect.html'
 
 	error: (errorThrown, params, data) ->

@@ -51,5 +51,5 @@ The URL of the Frontend `redirect.html` has the following structure:
 	
 | Field | Description |
 |:-----------|:------------|
-| type | Which type of dialog should be displayed.<br>Empty: Show the dialog where the customer can enter his code.<br>`email`: Show the dialog where the customer can enter his email when the session isn't available, yet. |
-| code | This field is required when `type` is `email`. The code will be saved along with the email into the database. |
+| type | Which type of dialog should be displayed.<br>Empty: Show the dialog where the customer can enter his code.<br>`redirect`: Directly redirect to a code. Shows the email-dialog when the album is empty.<br>`email`: Show the dialog where the customer can enter his email when the session isn't available, yet. |
+| code | This field is required when `type` is `redirect` or `email`. |
