@@ -16,6 +16,9 @@ this.frontend =
 			# After payment
 			###
 
+			# Show header
+			$('header').addClass 'show'
+
 			# Load
 			content.load.album albumID
 
@@ -26,12 +29,18 @@ this.frontend =
 
 		else if albumID? and photoID? and photoID not ''
 
+			# Show header
+			$('header').addClass 'show'
+
 			# Load
 			content.load.album albumID
 			content.load.photo albumID, photoID
 			return true
 
 		else if albumID?
+
+			# Show header
+			$('header').addClass 'show'
 
 			# Load album
 			content.load.album albumID
