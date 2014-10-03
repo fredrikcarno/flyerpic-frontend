@@ -118,6 +118,10 @@ header {
 			@include vendorize(transition, color $duration);
 
 			&:hover { color: black(1); }
+
+			@include breakpoint(34em) {
+				&:first-child { display: none; }
+			}
 		}
 
 	/* Buy ------------------------------------------------- */
