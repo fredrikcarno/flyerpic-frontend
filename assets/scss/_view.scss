@@ -51,4 +51,8 @@
 		background-size: contain;
 
 		@include vendorize(animation, zoomIn $duration $timing);
+
+		@include breakpoint('medium') {
+			top: 170px;
+		}
 	}

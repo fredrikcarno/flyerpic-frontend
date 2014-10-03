@@ -109,14 +109,12 @@ this.content =
 						body:	"""
 								<p>Ups! Your purchase was not successful and we can not unlock your photos. Please contact the support with this message.</p>
 								"""
-						closable: true
 						buttons:
 							cancel:
 								title: 'Cancel'
 								fn: -> modal.close()
 							action:
 								title: 'Contact support'
-								color: 'normal'
 								icon: 'ion-help-circled'
 								fn: ->
 									window.location.href = "mailto:#{ content.data.user.helpmail }"
@@ -134,14 +132,12 @@ this.content =
 						body:	"""
 								<p>Ups! Your purchase was successful, but we could not unlock your photos. Please contact the support with this message.</p>
 								"""
-						closable: true
 						buttons:
 							cancel:
 								title: 'Cancel'
 								fn: -> modal.close()
 							action:
 								title: 'Contact support'
-								color: 'normal'
 								icon: 'ion-help-circled'
 								fn: ->
 									window.location.href = "mailto:#{ content.data.user.helpmail }"
@@ -159,14 +155,12 @@ this.content =
 						body:	"""
 								<p>Congratulation! You can now download and use your photos wherever and how often you want. Your photos are available for download the next 30 days.</p>
 								"""
-						closable: true
 						buttons:
 							cancel:
 								title: 'Cancel'
 								fn: -> modal.close()
 							action:
 								title: 'Download your photos'
-								color: 'normal'
 								icon: 'ion-arrow-down-a'
 								fn: ->
 									content.load.download albumID, photoID
@@ -184,14 +178,12 @@ this.content =
 						body:	"""
 								<p>Ups! Something went wrong and we do not know what it is. Please contact the support with this message.</p>
 								"""
-						closable: true
 						buttons:
 							cancel:
 								title: 'Cancel'
 								fn: -> modal.close()
 							action:
 								title: 'Contact support'
-								color: 'normal'
 								icon: 'ion-help-circled'
 								fn: ->
 									window.location.href = "mailto:#{ content.data.user.helpmail }"
@@ -218,14 +210,12 @@ this.content =
 				body:	"""
 						<p>Ups! Something went wrong and we do not know what it is. Please contact the support with this message.</p>
 						"""
-				closable: true
 				buttons:
 					cancel:
 						title: 'Cancel'
 						fn: -> modal.close()
 					action:
 						title: 'Contact support'
-						color: 'normal'
 						icon: 'ion-help-circled'
 						fn: ->
 							window.location.href = "mailto:#{ content.data.user.helpmail }"
@@ -247,7 +237,7 @@ this.content =
 						$('#view').hide()
 					, 300
 
-			$('header #about, header menu').show()
+			$('header #about, header menu').removeClass 'hidden'
 			$('header #close').hide()
 
 			# Change button
@@ -274,7 +264,7 @@ this.content =
 					.removeClass 'fadeOut'
 					.addClass 'fadeIn'
 
-			$('header #about, header menu').hide()
+			$('header #about, header menu').addClass 'hidden'
 			$('header #close').show()
 
 			# Change button
