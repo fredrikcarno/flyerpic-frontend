@@ -6,7 +6,6 @@ $cMain: #4490C9;
 /* Vars ------------------------------------------------*/
 $duration: .3s;
 $timing: cubic-bezier(0.51,.92,.24,1.15);
-$break: '600px';
 
 /* Mixins ------------------------------------------------ */
 @mixin vendorize($property, $value) {
@@ -32,6 +31,57 @@ $break: '600px';
 	@keyframes $animation-name {
 		@content;
 	}
+}
+
+@mixin breakpoint($from, $to: '', $direction: 'max') {
+
+	// Define vars
+	$fromSize: $from;
+	$toSize: 0;
+	$directionInverted: 0;
+
+	@if $from == 'small'	{ $fromSize: 30em; } //480px
+	@if $from == 'small+'	{ $fromSize: 40em; } //640px
+	@if $from == 'medium'	{ $fromSize: 48em; } //768px
+	@if $from == 'medium+'	{ $fromSize: 55em; } //?
+	@if $from == 'large'	{ $fromSize: 60em; } //960px
+	@if $from == 'large+'	{ $fromSize: 64em; } //1024px
+	@if $from == 'wide'		{ $fromSize: 75em; } //1200px
+	@if $from == 'wide+'	{ $fromSize: 90em; } //?
+
+	@if $to == 'small'		{ $fromSize: 30em; } //480px
+	@if $to == 'small+'		{ $fromSize: 40em; } //640px
+	@if $to == 'medium'		{ $fromSize: 48em; } //768px
+	@if $to == 'medium+'	{ $fromSize: 55em; } //?
+	@if $to == 'large'		{ $fromSize: 60em; } //960px
+	@if $to == 'large+'		{ $fromSize: 64em; } //1024px
+	@if $to == 'wide'		{ $fromSize: 75em; } //1200px
+	@if $to == 'wide+'		{ $fromSize: 90em; } //?
+
+	@if $direction == min {
+		// Increase fromSize
+		$fromSize: $fromSize + .07em;
+	}
+
+	@if $to == '' {
+
+		// Set breakpoint
+		@media (#{ $direction }-width: $fromSize) { @content; }
+
+	}
+
+	@if $to != '' {
+
+		// Invert direction
+		@if $direction == max { $directionInverted: 'min'; }
+		@else if $direction == min { $directionInverted: 'max'; }
+
+
+		// Set breakpoint
+		@media (#{ $direction }-width: $fromSize) and (#{ $directionInverted }-width: $toSize) { @content; }
+
+	}
+
 }
 
 /* Functions ------------------------------------------------*/
