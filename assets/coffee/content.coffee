@@ -157,7 +157,7 @@ this.content =
 
 					modal.show
 						body:	"""
-								<p>Congratulation! You can now download and use your photos wherever and how often you want.</p>
+								<p>Congratulation! You can now download and use your photos wherever and how often you want. Your photos are available for download the next 30 days.</p>
 								"""
 						closable: true
 						buttons:
