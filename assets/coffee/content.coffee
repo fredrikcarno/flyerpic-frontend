@@ -111,7 +111,7 @@ this.content =
 								"""
 						buttons:
 							cancel:
-								title: 'Cancel'
+								title: 'Close'
 								fn: -> modal.close()
 							action:
 								title: 'Contact support'
@@ -134,7 +134,7 @@ this.content =
 								"""
 						buttons:
 							cancel:
-								title: 'Cancel'
+								title: 'Close'
 								fn: -> modal.close()
 							action:
 								title: 'Contact support'
@@ -157,7 +157,7 @@ this.content =
 								"""
 						buttons:
 							cancel:
-								title: 'Cancel'
+								title: 'Close'
 								fn: -> modal.close()
 							action:
 								title: 'Download your photos'
@@ -180,7 +180,7 @@ this.content =
 								"""
 						buttons:
 							cancel:
-								title: 'Cancel'
+								title: 'Close'
 								fn: -> modal.close()
 							action:
 								title: 'Contact support'
@@ -212,7 +212,7 @@ this.content =
 						"""
 				buttons:
 					cancel:
-						title: 'Cancel'
+						title: 'Close'
 						fn: -> modal.close()
 					action:
 						title: 'Contact support'
