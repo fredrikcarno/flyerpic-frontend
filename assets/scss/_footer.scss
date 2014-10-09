@@ -1,0 +1,26 @@
+/* Footer ------------------------------------------------- */
+footer {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	padding: 10px 0;
+	width: 100%;
+	background-color: rgba($cForeground, .98);
+	border-top: 1px solid black(.15);
+	z-index: 2;
+}
+
+/* Links ------------------------------------------------- */
+footer a {
+	margin: 0;
+	padding: 5px 0 5px 10px;
+	color: black(.6);
+	font-size: 13px;
+	text-decoration: none;
+
+	@include vendorize(transition, color $duration);
+
+	&:first-child { padding-left: 16px; }
+
+	&:hover { color: black(1); }
+}
