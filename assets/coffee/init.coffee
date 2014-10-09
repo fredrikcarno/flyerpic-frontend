@@ -8,7 +8,7 @@ $(document).ready ->
 	# Keyboard shortcuts
 	$(document).keyup (e) ->
 		if e.keyCode is 27 then $('header a#close').click()
-		else if e.keyCode is 13 then $('.modalContainer #action').addClass('active').click()
+		else if e.keyCode is 13 then modal.action()
 
 	# Init button
 	button.init '#buy'

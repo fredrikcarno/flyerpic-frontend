@@ -85,7 +85,7 @@ this.frontend =
 				body:	"""
 						<h1>Enter Code</h1>
 						<p>Please enter the code from your flyer into the box below. <a href="mailto:#{ frontend.data.helpmail }">Need help?</a></p>
-						<input class="text" type="text" placeholder="Your Code" data-name="code" autocapitalize="off" autocorrect="off">
+						<input class="text" type="text" placeholder="Your Code" data-name="code" autocapitalize="off" autocorrect="off" autofocus>
 						"""
 				closable: false
 				class: 'login'
@@ -158,7 +158,7 @@ this.frontend =
 				body:	"""
 						<h1>Flyerpic</h1>
 						<p>Your photos are not available, yet. The photographer may need some more time to process them. You can enter your e-mail below and we will notify you when your photos are ready! <a href="mailto:#{ frontend.data.helpmail }">Need help?</a></p>
-						<input class="text" type="email" placeholder="Your E-Mail" data-name="mail">
+						<input class="text" type="email" placeholder="Your E-Mail" data-name="mail" autofocus>
 						"""
 				closable: false
 				class: 'login'
@@ -218,4 +218,4 @@ $(document).ready ->
 
 	# Keyboard shortcuts
 	$(document).keyup (e) ->
-		if e.keyCode is 13 then $('.modalContainer #action').addClass('active').click()
+		if e.keyCode is 13 then modal.action()
