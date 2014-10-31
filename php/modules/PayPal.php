@@ -10,8 +10,11 @@ class PayPal {
 
 	private $database	= null;
 
-	private $apiUrl		= 'https://svcs.sandbox.paypal.com/AdaptivePayments/';
-	private $paypalUrl	= 'https://sandbox.paypal.com/websrc?cmd=_ap-payment&paykey=';
+	// private $apiUrl		= 'https://svcs.sandbox.paypal.com/AdaptivePayments/';
+	// private $paypalUrl	= 'https://sandbox.paypal.com/websrc?cmd=_ap-payment&paykey=';
+
+	private $apiUrl		= 'https://svcs.paypal.com/AdaptivePayments/';
+	private $paypalUrl	= 'https://paypal.com/websrc?cmd=_ap-payment&paykey=';
 
 	private $returnUrl	= '';
 	private $cancelUrl	= '';
